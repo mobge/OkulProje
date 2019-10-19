@@ -1,0 +1,34 @@
+﻿@using Proje.Models
+@model List<Kullanici>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a class="btn btn-success" href="/User/Yeni">Öğretim Elemanı Ekle</a>
+<h2>Öğretim Elemanı Listesi</h2>
+<table class="table table-bordered">
+    <thead>
+        <th>Sicil Numarası</th>
+        <th>Ad</th>
+        <th>Soyad</th>
+        <th>Şifre</th>
+        <th>Rolü</th>
+        <th>Güncelle</th>
+        <th>Sil</th>
+    </thead>
+    <tbody>
+        @foreach (var kullanici in Model)
+        {
+        <tr>
+            <td>@kullanici.Sicil_No</td>
+            <td>@kullanici.Ad</td>
+            <td>@kullanici.Soyad</td>
+            <td>@kullanici.Sifre</td>
+            <td>@kullanici.Rol_Id</td>
+            <td><a class="btn btn-primary" href="/User/Guncelle/@kullanici.Sicil_No">Güncelle</a></td>
+            <td><a class="btn btn-warning" href="/User/Sil/@kullanici.Sicil_No">Sil</a></td>
+        </tr>
+        }
+    </tbody>
+</table>
+
