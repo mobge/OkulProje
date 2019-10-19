@@ -164,6 +164,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Yeni.cshtml" />
+    <Content Include="Views\User\Guncelle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -182,6 +184,7 @@
     <Compile Include="Models\Bolum_Kazanim.cs">
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Component\Kullanici.cs" />
     <Compile Include="Models\Dersler.cs">
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>

@@ -1,5 +1,5 @@
-﻿@using Proje.Models
-@model List<Kullanici>
+﻿@using Proje.ViewModels
+@model KullaniciDetailViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -17,14 +17,14 @@
         <th>Sil</th>
     </thead>
     <tbody>
-        @foreach (var kullanici in Model)
+        @foreach (var kullanici in Model.KullaniciList)
         {
         <tr>
             <td>@kullanici.Sicil_No</td>
             <td>@kullanici.Ad</td>
             <td>@kullanici.Soyad</td>
             <td>@kullanici.Sifre</td>
-            <td>@kullanici.Rol_Id</td>
+            <td>@kullanici.RolAdi</td>
             <td><a class="btn btn-primary" href="/User/Guncelle/@kullanici.Sicil_No">Güncelle</a></td>
             <td><a class="btn btn-warning" href="/User/Sil/@kullanici.Sicil_No">Sil</a></td>
         </tr>
