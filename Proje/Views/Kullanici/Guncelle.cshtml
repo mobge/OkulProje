@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>Güncelle</h2>
-@using (Html.BeginForm("Guncelle", "User", FormMethod.Post))
+@using (Html.BeginForm("Guncelle", "Kullanici", FormMethod.Post))
 {
     <div class="form-group">
         @Html.LabelFor(m => m.updatedKullanici.Sicil_No)

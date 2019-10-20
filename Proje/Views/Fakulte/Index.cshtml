@@ -1,0 +1,28 @@
+﻿@using Proje.Models
+@model List<Fakulte>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a class="btn btn-success" href="/Fakulte/Ekle">Fakülte Ekle</a>
+<h2>Fakülte Listesi</h2>
+<table class="table table-bordered">
+    <thead>
+    <th>Fakülte Numarası</th>
+    <th>Fakülte Adı</th>
+    </thead>
+    <tbody>
+        @foreach (var fakulte in Model)
+        {
+            <tr>
+                <td>@fakulte.Fakulte_No</td>
+                <td>@fakulte.Fakulte_Adi</td>
+                <td><a class="btn btn-primary" href="/Fakulte/Guncelle/@fakulte.Fakulte_No">Güncelle</a></td>
+                <td><a class="btn btn-warning" href="/Fakulte/Sil/@fakulte.Fakulte_No">Sil</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

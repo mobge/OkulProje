@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Proje.Controllers
 {
-    public class UserController : Controller
+    public class KullaniciController : Controller
     {
         okulEntities db = new okulEntities();
         public ActionResult Index()
