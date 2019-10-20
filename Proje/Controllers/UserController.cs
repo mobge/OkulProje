@@ -2,6 +2,7 @@
 using Proje.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -52,6 +53,26 @@ namespace Proje.Controllers
             kullaniciDetailViewModel.updatedKullanici = (from a in db.Kullanici join b in db.Roller on a.Rol_Id equals b.Rol_Id where a.Sicil_No == id.ToString() select new KullaniciDetail { Sicil_No = a.Sicil_No, Ad = a.Ad, Soyad = a.Soyad, RolAdi = b.Rol_Adi, Rol_Id = a.Rol_Id, Sifre = a.Sifre }).First();
             kullaniciDetailViewModel.Roller = db.Roller.ToList();
             return View("Guncelle", kullaniciDetailViewModel);
+        }
+        [HttpPost]
+        public ActionResult Guncelle(KullaniciDetailViewModel kullaniciDetailViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var updatedUser = db.Kullanici.SingleOrDefault(x => x.Sicil_No == kullaniciDetailViewModel.updatedKullanici.Sicil_No);
+                updatedUser.Sicil_No = kullaniciDetailViewModel.updatedKullanici.Sicil_No;
+                updatedUser.Ad = kullaniciDetailViewModel.updatedKullanici.Ad;
+                updatedUser.Soyad = kullaniciDetailViewModel.updatedKullanici.Soyad;
+                updatedUser.Rol_Id = kullaniciDetailViewModel.updatedKullanici.Rol_Id;
+                updatedUser.Sifre = kullaniciDetailViewModel.updatedKullanici.Sifre;
+                db.Entry(updatedUser).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
         }
     }
 }
