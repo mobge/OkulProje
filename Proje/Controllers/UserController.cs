@@ -74,5 +74,14 @@ namespace Proje.Controllers
                 return RedirectToAction("Index");
             }
         }
+        public ActionResult Sil(int id)
+        {
+            var silinecekKullanici = db.Kullanici.Find(id.ToString());
+            if (silinecekKullanici == null)
+                return HttpNotFound();
+            db.Kullanici.Remove(silinecekKullanici);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
