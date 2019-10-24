@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BolumController.cs" />
     <Compile Include="Controllers\FakulteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PageController.cs" />
@@ -199,9 +200,6 @@
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Kullanici.cs">
-      <DependentUpon>OkulModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Ogrenci.cs">
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OkulModel.Context.cs">
@@ -235,6 +233,7 @@
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BolumViewModel.cs" />
     <Compile Include="ViewModels\FakulteViewModel.cs" />
     <Compile Include="ViewModels\KullaniciViewModel.cs" />
   </ItemGroup>
@@ -254,6 +253,9 @@
     <Content Include="Views\Fakulte\Index.cshtml" />
     <Content Include="Views\Fakulte\Ekle.cshtml" />
     <Content Include="Views\Fakulte\Guncelle.cshtml" />
+    <Content Include="Views\Bolum\Index.cshtml" />
+    <Content Include="Views\Bolum\Ekle.cshtml" />
+    <Content Include="Views\Bolum\Guncelle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

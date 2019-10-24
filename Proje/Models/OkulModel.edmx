@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="okulModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="okulModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Acilan_Dersler">
           <Key>
             <PropertyRef Name="Id" />
@@ -23,6 +23,7 @@
           </Key>
           <Property Name="Bolum_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Bolum_Adi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fakulte_No" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Bolum_Kazanim">
           <Key>
@@ -30,7 +31,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Bolum_Id" Type="int" Nullable="false" />
-          <Property Name="Bolum_Yeterlilik" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Bolum_Yeterlilik" Type="nvarchar" MaxLength="4000" Nullable="false" />
         </EntityType>
         <EntityType Name="Ders_Kazanim">
           <Key>
@@ -38,7 +39,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Ders_Kodu" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Ders_Ogrenme" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Ders_Ogrenme" Type="nvarchar" MaxLength="4000" Nullable="false" />
         </EntityType>
         <EntityType Name="Dersler">
           <Key>
@@ -46,6 +47,8 @@
           </Key>
           <Property Name="Ders_Kodu" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Ders_Adi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fakulte_No" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Bolum_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Donem_Yil">
           <Key>
@@ -71,14 +74,6 @@
           <Property Name="Soyad" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Sifre" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Rol_Id" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Ogrenci">
-          <Key>
-            <PropertyRef Name="Ogrenci_No" />
-          </Key>
-          <Property Name="Ogrenci_No" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Ad" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Soyad" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Roller">
           <Key>
@@ -184,6 +179,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Bolum_Bolum">
+          <End Role="Fakulte" Type="Self.Fakulte" Multiplicity="1" />
+          <End Role="Bolum" Type="Self.Bolum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fakulte">
+              <PropertyRef Name="Fakulte_No" />
+            </Principal>
+            <Dependent Role="Bolum">
+              <PropertyRef Name="Fakulte_No" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Bolum_Kazanim_Bolum">
           <End Role="Bolum" Type="Self.Bolum" Multiplicity="1" />
           <End Role="Bolum_Kazanim" Type="Self.Bolum_Kazanim" Multiplicity="*" />
@@ -205,6 +212,30 @@
             </Principal>
             <Dependent Role="Ders_Kazanim">
               <PropertyRef Name="Ders_Kodu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dersler_Bolum">
+          <End Role="Bolum" Type="Self.Bolum" Multiplicity="1" />
+          <End Role="Dersler" Type="Self.Dersler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bolum">
+              <PropertyRef Name="Bolum_Id" />
+            </Principal>
+            <Dependent Role="Dersler">
+              <PropertyRef Name="Bolum_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dersler_Fakulte">
+          <End Role="Fakulte" Type="Self.Fakulte" Multiplicity="1" />
+          <End Role="Dersler" Type="Self.Dersler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fakulte">
+              <PropertyRef Name="Fakulte_No" />
+            </Principal>
+            <Dependent Role="Dersler">
+              <PropertyRef Name="Fakulte_No" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -256,18 +287,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Sinav_Sonuclari_Ogrenci">
-          <End Role="Ogrenci" Type="Self.Ogrenci" Multiplicity="1" />
-          <End Role="Sinav_Sonuclari" Type="Self.Sinav_Sonuclari" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Ogrenci">
-              <PropertyRef Name="Ogrenci_No" />
-            </Principal>
-            <Dependent Role="Sinav_Sonuclari">
-              <PropertyRef Name="Ogrenci_No" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Sinav_Sonuclari_Sınav_Turu">
           <End Role="Sınav_Turu" Type="Self.Sınav_Turu" Multiplicity="1" />
           <End Role="Sinav_Sonuclari" Type="Self.Sinav_Sonuclari" Multiplicity="*" />
@@ -301,7 +320,6 @@
           <EntitySet Name="Donem_Yil" EntityType="Self.Donem_Yil" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Fakulte" EntityType="Self.Fakulte" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Kullanici" EntityType="Self.Kullanici" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Ogrenci" EntityType="Self.Ogrenci" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roller" EntityType="Self.Roller" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sınav_Turu" EntityType="Self.Sınav_Turu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sinav_Grup" EntityType="Self.Sinav_Grup" Schema="dbo" store:Type="Tables" />
@@ -327,6 +345,10 @@
             <End Role="Kullanici" EntitySet="Kullanici" />
             <End Role="Acilan_Dersler" EntitySet="Acilan_Dersler" />
           </AssociationSet>
+          <AssociationSet Name="FK_Bolum_Bolum" Association="Self.FK_Bolum_Bolum">
+            <End Role="Fakulte" EntitySet="Fakulte" />
+            <End Role="Bolum" EntitySet="Bolum" />
+          </AssociationSet>
           <AssociationSet Name="FK_Bolum_Kazanim_Bolum" Association="Self.FK_Bolum_Kazanim_Bolum">
             <End Role="Bolum" EntitySet="Bolum" />
             <End Role="Bolum_Kazanim" EntitySet="Bolum_Kazanim" />
@@ -334,6 +356,14 @@
           <AssociationSet Name="FK_Ders_Kazanim_Dersler" Association="Self.FK_Ders_Kazanim_Dersler">
             <End Role="Dersler" EntitySet="Dersler" />
             <End Role="Ders_Kazanim" EntitySet="Ders_Kazanim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dersler_Bolum" Association="Self.FK_Dersler_Bolum">
+            <End Role="Bolum" EntitySet="Bolum" />
+            <End Role="Dersler" EntitySet="Dersler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dersler_Fakulte" Association="Self.FK_Dersler_Fakulte">
+            <End Role="Fakulte" EntitySet="Fakulte" />
+            <End Role="Dersler" EntitySet="Dersler" />
           </AssociationSet>
           <AssociationSet Name="FK_Sinav_Sonuclari_Bolum" Association="Self.FK_Sinav_Sonuclari_Bolum">
             <End Role="Bolum" EntitySet="Bolum" />
@@ -351,10 +381,6 @@
             <End Role="Fakulte" EntitySet="Fakulte" />
             <End Role="Sinav_Sonuclari" EntitySet="Sinav_Sonuclari" />
           </AssociationSet>
-          <AssociationSet Name="FK_Sinav_Sonuclari_Ogrenci" Association="Self.FK_Sinav_Sonuclari_Ogrenci">
-            <End Role="Ogrenci" EntitySet="Ogrenci" />
-            <End Role="Sinav_Sonuclari" EntitySet="Sinav_Sonuclari" />
-          </AssociationSet>
           <AssociationSet Name="FK_Sinav_Sonuclari_Sınav_Turu" Association="Self.FK_Sinav_Sonuclari_Sınav_Turu">
             <End Role="Sınav_Turu" EntitySet="Sınav_Turu" />
             <End Role="Sinav_Sonuclari" EntitySet="Sinav_Sonuclari" />
@@ -364,8 +390,7 @@
             <End Role="Sinav_Sonuclari" EntitySet="Sinav_Sonuclari" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="okulModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -395,6 +420,9 @@
           <NavigationProperty Name="Acilan_Dersler" Relationship="Self.FK_Acilan_Dersler_Bolum" FromRole="Bolum" ToRole="Acilan_Dersler" />
           <NavigationProperty Name="Bolum_Kazanim" Relationship="Self.FK_Bolum_Kazanim_Bolum" FromRole="Bolum" ToRole="Bolum_Kazanim" />
           <NavigationProperty Name="Sinav_Sonuclari" Relationship="Self.FK_Sinav_Sonuclari_Bolum" FromRole="Bolum" ToRole="Sinav_Sonuclari" />
+          <Property Name="Fakulte_No" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Fakulte" Relationship="okulModel.FK_Bolum_Bolum" FromRole="Bolum" ToRole="Fakulte" />
+          <NavigationProperty Name="Dersler" Relationship="okulModel.FK_Dersler_Bolum" FromRole="Bolum" ToRole="Dersler" />
         </EntityType>
         <EntityType Name="Bolum_Kazanim">
           <Key>
@@ -402,7 +430,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Bolum_Id" Type="Int32" Nullable="false" />
-          <Property Name="Bolum_Yeterlilik" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Bolum_Yeterlilik" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Bolum" Relationship="Self.FK_Bolum_Kazanim_Bolum" FromRole="Bolum_Kazanim" ToRole="Bolum" />
         </EntityType>
         <EntityType Name="Ders_Kazanim">
@@ -411,7 +439,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Ders_Kodu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Ders_Ogrenme" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ders_Ogrenme" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Dersler" Relationship="Self.FK_Ders_Kazanim_Dersler" FromRole="Ders_Kazanim" ToRole="Dersler" />
         </EntityType>
         <EntityType Name="Dersler">
@@ -423,6 +451,10 @@
           <NavigationProperty Name="Acilan_Dersler" Relationship="Self.FK_Acilan_Dersler_Dersler" FromRole="Dersler" ToRole="Acilan_Dersler" />
           <NavigationProperty Name="Ders_Kazanim" Relationship="Self.FK_Ders_Kazanim_Dersler" FromRole="Dersler" ToRole="Ders_Kazanim" />
           <NavigationProperty Name="Sinav_Sonuclari" Relationship="Self.FK_Sinav_Sonuclari_Dersler" FromRole="Dersler" ToRole="Sinav_Sonuclari" />
+          <Property Name="Fakulte_No" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Bolum_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bolum" Relationship="okulModel.FK_Dersler_Bolum" FromRole="Dersler" ToRole="Bolum" />
+          <NavigationProperty Name="Fakulte" Relationship="okulModel.FK_Dersler_Fakulte" FromRole="Dersler" ToRole="Fakulte" />
         </EntityType>
         <EntityType Name="Donem_Yil">
           <Key>
@@ -442,6 +474,8 @@
           <Property Name="Fakulte_Adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Acilan_Dersler" Relationship="Self.FK_Acilan_Dersler_Fakulte" FromRole="Fakulte" ToRole="Acilan_Dersler" />
           <NavigationProperty Name="Sinav_Sonuclari" Relationship="Self.FK_Sinav_Sonuclari_Fakulte" FromRole="Fakulte" ToRole="Sinav_Sonuclari" />
+          <NavigationProperty Name="Bolum" Relationship="okulModel.FK_Bolum_Bolum" FromRole="Fakulte" ToRole="Bolum" />
+          <NavigationProperty Name="Dersler" Relationship="okulModel.FK_Dersler_Fakulte" FromRole="Fakulte" ToRole="Dersler" />
         </EntityType>
         <EntityType Name="Kullanici">
           <Key>
@@ -453,15 +487,6 @@
           <Property Name="Sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Rol_Id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Acilan_Dersler" Relationship="Self.FK_Acilan_Dersler_Kullanici" FromRole="Kullanici" ToRole="Acilan_Dersler" />
-        </EntityType>
-        <EntityType Name="Ogrenci">
-          <Key>
-            <PropertyRef Name="Ogrenci_No" />
-          </Key>
-          <Property Name="Ogrenci_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Sinav_Sonuclari" Relationship="Self.FK_Sinav_Sonuclari_Ogrenci" FromRole="Ogrenci" ToRole="Sinav_Sonuclari" />
         </EntityType>
         <EntityType Name="Roller">
           <Key>
@@ -503,7 +528,6 @@
           <NavigationProperty Name="Dersler" Relationship="Self.FK_Sinav_Sonuclari_Dersler" FromRole="Sinav_Sonuclari" ToRole="Dersler" />
           <NavigationProperty Name="Donem_Yil" Relationship="Self.FK_Sinav_Sonuclari_Donem_Yil" FromRole="Sinav_Sonuclari" ToRole="Donem_Yil" />
           <NavigationProperty Name="Fakulte" Relationship="Self.FK_Sinav_Sonuclari_Fakulte" FromRole="Sinav_Sonuclari" ToRole="Fakulte" />
-          <NavigationProperty Name="Ogrenci" Relationship="Self.FK_Sinav_Sonuclari_Ogrenci" FromRole="Sinav_Sonuclari" ToRole="Ogrenci" />
           <NavigationProperty Name="Sınav_Turu" Relationship="Self.FK_Sinav_Sonuclari_Sınav_Turu" FromRole="Sinav_Sonuclari" ToRole="Sınav_Turu" />
           <NavigationProperty Name="Sinav_Grup" Relationship="Self.FK_Sinav_Sonuclari_Sinav_Grup" FromRole="Sinav_Sonuclari" ToRole="Sinav_Grup" />
         </EntityType>
@@ -648,18 +672,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Sinav_Sonuclari_Ogrenci">
-          <End Role="Ogrenci" Type="Self.Ogrenci" Multiplicity="1" />
-          <End Role="Sinav_Sonuclari" Type="Self.Sinav_Sonuclari" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Ogrenci">
-              <PropertyRef Name="Ogrenci_No" />
-            </Principal>
-            <Dependent Role="Sinav_Sonuclari">
-              <PropertyRef Name="Ogrenci_No" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Sinav_Sonuclari_Sınav_Turu">
           <End Role="Sınav_Turu" Type="Self.Sınav_Turu" Multiplicity="1" />
           <End Role="Sinav_Sonuclari" Type="Self.Sinav_Sonuclari" Multiplicity="*" />
@@ -693,7 +705,6 @@
           <EntitySet Name="Donem_Yil" EntityType="Self.Donem_Yil" />
           <EntitySet Name="Fakulte" EntityType="Self.Fakulte" />
           <EntitySet Name="Kullanici" EntityType="Self.Kullanici" />
-          <EntitySet Name="Ogrenci" EntityType="Self.Ogrenci" />
           <EntitySet Name="Roller" EntityType="Self.Roller" />
           <EntitySet Name="Sınav_Turu" EntityType="Self.Sınav_Turu" />
           <EntitySet Name="Sinav_Grup" EntityType="Self.Sinav_Grup" />
@@ -743,10 +754,6 @@
             <End Role="Fakulte" EntitySet="Fakulte" />
             <End Role="Sinav_Sonuclari" EntitySet="Sinav_Sonuclari" />
           </AssociationSet>
-          <AssociationSet Name="FK_Sinav_Sonuclari_Ogrenci" Association="Self.FK_Sinav_Sonuclari_Ogrenci">
-            <End Role="Ogrenci" EntitySet="Ogrenci" />
-            <End Role="Sinav_Sonuclari" EntitySet="Sinav_Sonuclari" />
-          </AssociationSet>
           <AssociationSet Name="FK_Sinav_Sonuclari_Sınav_Turu" Association="Self.FK_Sinav_Sonuclari_Sınav_Turu">
             <End Role="Sınav_Turu" EntitySet="Sınav_Turu" />
             <End Role="Sinav_Sonuclari" EntitySet="Sinav_Sonuclari" />
@@ -755,7 +762,55 @@
             <End Role="Sinav_Grup" EntitySet="Sinav_Grup" />
             <End Role="Sinav_Sonuclari" EntitySet="Sinav_Sonuclari" />
           </AssociationSet>
+          <AssociationSet Name="FK_Bolum_Bolum" Association="okulModel.FK_Bolum_Bolum">
+            <End Role="Fakulte" EntitySet="Fakulte" />
+            <End Role="Bolum" EntitySet="Bolum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dersler_Bolum" Association="okulModel.FK_Dersler_Bolum">
+            <End Role="Bolum" EntitySet="Bolum" />
+            <End Role="Dersler" EntitySet="Dersler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dersler_Fakulte" Association="okulModel.FK_Dersler_Fakulte">
+            <End Role="Fakulte" EntitySet="Fakulte" />
+            <End Role="Dersler" EntitySet="Dersler" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Bolum_Bolum">
+          <End Type="okulModel.Fakulte" Role="Fakulte" Multiplicity="1" />
+          <End Type="okulModel.Bolum" Role="Bolum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fakulte">
+              <PropertyRef Name="Fakulte_No" />
+            </Principal>
+            <Dependent Role="Bolum">
+              <PropertyRef Name="Fakulte_No" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dersler_Bolum">
+          <End Type="okulModel.Bolum" Role="Bolum" Multiplicity="1" />
+          <End Type="okulModel.Dersler" Role="Dersler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bolum">
+              <PropertyRef Name="Bolum_Id" />
+            </Principal>
+            <Dependent Role="Dersler">
+              <PropertyRef Name="Bolum_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dersler_Fakulte">
+          <End Type="okulModel.Fakulte" Role="Fakulte" Multiplicity="1" />
+          <End Type="okulModel.Dersler" Role="Dersler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fakulte">
+              <PropertyRef Name="Fakulte_No" />
+            </Principal>
+            <Dependent Role="Dersler">
+              <PropertyRef Name="Fakulte_No" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -778,6 +833,7 @@
           <EntitySetMapping Name="Bolum">
             <EntityTypeMapping TypeName="okulModel.Bolum">
               <MappingFragment StoreEntitySet="Bolum">
+                <ScalarProperty Name="Fakulte_No" ColumnName="Fakulte_No" />
                 <ScalarProperty Name="Bolum_Id" ColumnName="Bolum_Id" />
                 <ScalarProperty Name="Bolum_Adi" ColumnName="Bolum_Adi" />
               </MappingFragment>
@@ -804,6 +860,8 @@
           <EntitySetMapping Name="Dersler">
             <EntityTypeMapping TypeName="okulModel.Dersler">
               <MappingFragment StoreEntitySet="Dersler">
+                <ScalarProperty Name="Bolum_Id" ColumnName="Bolum_Id" />
+                <ScalarProperty Name="Fakulte_No" ColumnName="Fakulte_No" />
                 <ScalarProperty Name="Ders_Kodu" ColumnName="Ders_Kodu" />
                 <ScalarProperty Name="Ders_Adi" ColumnName="Ders_Adi" />
               </MappingFragment>
@@ -834,15 +892,6 @@
                 <ScalarProperty Name="Soyad" ColumnName="Soyad" />
                 <ScalarProperty Name="Sifre" ColumnName="Sifre" />
                 <ScalarProperty Name="Rol_Id" ColumnName="Rol_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Ogrenci">
-            <EntityTypeMapping TypeName="okulModel.Ogrenci">
-              <MappingFragment StoreEntitySet="Ogrenci">
-                <ScalarProperty Name="Ogrenci_No" ColumnName="Ogrenci_No" />
-                <ScalarProperty Name="Ad" ColumnName="Ad" />
-                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

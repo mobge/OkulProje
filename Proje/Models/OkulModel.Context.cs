@@ -33,7 +33,6 @@ namespace Proje.Models
         public virtual DbSet<Donem_Yil> Donem_Yil { get; set; }
         public virtual DbSet<Fakulte> Fakulte { get; set; }
         public virtual DbSet<Kullanici> Kullanici { get; set; }
-        public virtual DbSet<Ogrenci> Ogrenci { get; set; }
         public virtual DbSet<Roller> Roller { get; set; }
         public virtual DbSet<Sınav_Turu> Sınav_Turu { get; set; }
         public virtual DbSet<Sinav_Grup> Sinav_Grup { get; set; }

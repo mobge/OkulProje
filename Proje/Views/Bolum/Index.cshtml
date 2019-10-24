@@ -1,0 +1,31 @@
+﻿@using Proje.Models
+@model List<Bolum>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a class="btn btn-success" href="/Bolum/Ekle">Bölüm Ekle</a>
+<h2>Bölüm Listesi</h2>
+<table class="table table-bordered">
+    <thead>
+    <th>Bölüm ID</th>
+    <th>Bölüm Adı</th>
+    <th>Güncelle</th>
+    <th>Sil</th>
+    </thead>
+    <tbody>
+        @foreach (var bolum in Model)
+        {
+            <tr>
+                <td>@bolum.Bolum_Id</td>
+                <td>@bolum.Bolum_Adi</td>
+                <td><a class="btn btn-primary" href="/Bolum/Guncelle/@bolum.Bolum_Id">Güncelle</a></td>
+                <td><a class="btn btn-warning" href="/Bolum/Sil/@bolum.Bolum_Id">Sil</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+

@@ -1,0 +1,29 @@
+﻿@model Proje.ViewModels.BolumViewModel
+@{
+    ViewBag.Title = "Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Bölüm Ekle</h2>
+@using (Html.BeginForm("Ekle", "Bolum", FormMethod.Post))
+{
+    <div class="form-group" style="height:100% !important;">
+        <label>Fakülte Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.Fakulte_No), "Seçiniz", new { @class = "form-control", style = "height:100%" })
+        @Html.ValidationMessageFor(m => m.Fakulte_No, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Bolum_Adi)
+        @Html.TextBoxFor(m => m.Bolum_Adi, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Bolum_Adi, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label>Bölüm Yeterlilik: </label>
+        @Html.TextAreaFor(m => m.Bolum_Yeterlilik, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Bolum_Yeterlilik, "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <span style="color:red;">@ViewBag.Mesaj</span>
+}
+
+
+

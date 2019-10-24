@@ -24,6 +24,8 @@ namespace Proje.Models
     
         public string Ders_Kodu { get; set; }
         public string Ders_Adi { get; set; }
+        public string Fakulte_No { get; set; }
+        public int Bolum_Id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Acilan_Dersler> Acilan_Dersler { get; set; }
@@ -31,5 +33,7 @@ namespace Proje.Models
         public virtual ICollection<Ders_Kazanim> Ders_Kazanim { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sinav_Sonuclari> Sinav_Sonuclari { get; set; }
+        public virtual Bolum Bolum { get; set; }
+        public virtual Fakulte Fakulte { get; set; }
     }
 }

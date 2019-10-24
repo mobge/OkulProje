@@ -28,7 +28,6 @@ namespace Proje.Models
         public virtual Dersler Dersler { get; set; }
         public virtual Donem_Yil Donem_Yil { get; set; }
         public virtual Fakulte Fakulte { get; set; }
-        public virtual Ogrenci Ogrenci { get; set; }
         public virtual Sınav_Turu Sınav_Turu { get; set; }
         public virtual Sinav_Grup Sinav_Grup { get; set; }
     }
