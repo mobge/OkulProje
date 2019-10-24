@@ -86,6 +86,7 @@ namespace Proje.Controllers
                 return RedirectToAction("Index");
             }
         }
+        //Öncelikle foreign keyleri silmelisin.
         public ActionResult Sil(int id)
         {
             var silinecekBolum = db.Bolum.Find(id);
@@ -96,6 +97,11 @@ namespace Proje.Controllers
             db.Bolum.Remove(silinecekBolum);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+        public ActionResult Kazanim(int id)
+        {
+            var model = db.Bolum_Kazanim.ToList();
+            return View("Kazanim", model);
         }
     }
 }

@@ -256,6 +256,7 @@
     <Content Include="Views\Bolum\Index.cshtml" />
     <Content Include="Views\Bolum\Ekle.cshtml" />
     <Content Include="Views\Bolum\Guncelle.cshtml" />
+    <Content Include="Views\Bolum\Kazanim.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

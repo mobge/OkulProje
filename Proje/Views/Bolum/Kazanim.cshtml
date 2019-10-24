@@ -1,0 +1,23 @@
+﻿@using Proje.Models
+@model List<Bolum_Kazanim>
+@{
+    ViewBag.Title = "Kazanim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-bordered">
+    <thead>
+    <th><h2>Bölüm Kazanımları</h2></th>
+    </thead>
+    <tbody>
+            @foreach (var bolumkazanim in Model)
+            {
+                <tr>
+                    <td style="white-space:pre-wrap">@bolumkazanim.Bolum_Yeterlilik</td>
+                </tr>
+
+            }
+
+    </tbody>
+</table>
+
