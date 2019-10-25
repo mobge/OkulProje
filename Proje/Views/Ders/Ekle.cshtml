@@ -1,0 +1,39 @@
+﻿@model Proje.ViewModels.DersViewModel
+@{
+    ViewBag.Title = "Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Ders Ekle</h2>
+@using (Html.BeginForm("Ekle", "Ders", FormMethod.Post))
+{
+    <div class="form-group" style="height:100% !important;">
+        <label>Fakülte Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.Fakulte_No), "Seçiniz", new { @class = "form-control", style = "height:100%", onchange = "this.form.submit()" })
+        @Html.ValidationMessageFor(m => m.Fakulte_No, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="height:100% !important;">
+        <label>Bölüm Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Bolum_Id, new SelectList(Model.Bolum, "Bolum_Id", "Bolum_Adi", Model.Bolum_Id), "Seçiniz", new { @class = "form-control", style = "height:100%" })
+        @Html.ValidationMessageFor(m => m.Bolum_Id, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Ders_Kodu)
+        @Html.TextBoxFor(m => m.Ders_Kodu, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Ders_Kodu, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Ders_Adi)
+        @Html.TextBoxFor(m => m.Ders_Adi, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Ders_Adi, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label>Ders Kazanımları </label>
+        @Html.TextAreaFor(m => m.Ders_Ogrenme, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Ders_Ogrenme, "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <span style="color:red;">@ViewBag.Mesaj</span>
+}
+
+
+
