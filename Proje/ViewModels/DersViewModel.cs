@@ -26,4 +26,10 @@ namespace Proje.ViewModels
         public IEnumerable<Bolum> Bolum { get; set; }
         public IEnumerable<Dersler> Dersler { get; set; }
     }
+    public class DersDetailViewModel
+    {
+        public DersDetail UpdatedDers { get; set; }
+        public IEnumerable<Fakulte> Fakulte { get; set; }
+        public IEnumerable<Bolum> Bolum { get; set; }
+    }
 }

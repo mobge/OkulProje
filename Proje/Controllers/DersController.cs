@@ -66,5 +66,35 @@ namespace Proje.Controllers
             }
             return View("Ekle", model);
         }
+        public ActionResult Guncelle(string id)
+        {
+            DersDetailViewModel dersDetailViewModel = new DersDetailViewModel();
+            dersDetailViewModel.UpdatedDers = (from a in db.Dersler join b in db.Bolum on a.Bolum_Id equals b.Bolum_Id where a.Ders_Kodu == id select new DersDetail { Ders_Kodu = a.Ders_Kodu, Ders_Adi = a.Ders_Adi, Bolum_Adi = b.Bolum_Adi, Bolum_Id=b.Bolum_Id ,Fakulte_No = b.Fakulte_No, Ders_Kazanim_Id=a.Ders_Kazanim.Where(s=>s.Ders_Kodu==id).Select(s=>s.Id).FirstOrDefault(),Ders_Ogrenme = a.Ders_Kazanim.Where(s => s.Ders_Kodu == id).Select(s => s.Ders_Ogrenme).FirstOrDefault() }).FirstOrDefault();
+            dersDetailViewModel.Fakulte = db.Fakulte.ToList();
+            dersDetailViewModel.Bolum = db.Bolum.ToList();
+            return View("Guncelle", dersDetailViewModel);
+        }
+        [HttpPost]
+        public ActionResult Guncelle(DersDetailViewModel dersDetail)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var guncellenecekDers = db.Dersler.Find(dersDetail.UpdatedDers.Ders_Kodu);
+                if (guncellenecekDers == null)
+                    return HttpNotFound();
+                guncellenecekDers.Fakulte_No = dersDetail.UpdatedDers.Fakulte_No;
+                guncellenecekDers.Bolum_Id = dersDetail.UpdatedDers.Bolum_Id;
+                guncellenecekDers.Ders_Kodu = dersDetail.UpdatedDers.Ders_Kodu;
+                guncellenecekDers.Ders_Adi = dersDetail.UpdatedDers.Ders_Adi;
+                var guncellenecekDersKazanim = db.Ders_Kazanim.Find(dersDetail.UpdatedDers.Ders_Kazanim_Id);
+                guncellenecekDersKazanim.Ders_Ogrenme = dersDetail.UpdatedDers.Ders_Ogrenme;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

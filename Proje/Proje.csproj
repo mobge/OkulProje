@@ -187,6 +187,7 @@
     <Compile Include="Models\Bolum_Kazanim.cs">
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Component\Dersler.cs" />
     <Compile Include="Models\Component\Kullanici.cs" />
     <Compile Include="Models\Dersler.cs">
       <DependentUpon>OkulModel.tt</DependentUpon>
@@ -261,6 +262,7 @@
     <Content Include="Views\Bolum\Kazanim.cshtml" />
     <Content Include="Views\Ders\Index.cshtml" />
     <Content Include="Views\Ders\Ekle.cshtml" />
+    <Content Include="Views\Ders\Guncelle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
