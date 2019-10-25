@@ -100,7 +100,7 @@ namespace Proje.Controllers
         }
         public ActionResult Kazanim(int id)
         {
-            var model = db.Bolum_Kazanim.ToList();
+            var model = db.Bolum_Kazanim.Where(s => s.Bolum_Id == id).ToList();
             return View("Kazanim", model);
         }
     }

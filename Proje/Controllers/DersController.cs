@@ -96,5 +96,22 @@ namespace Proje.Controllers
                 return RedirectToAction("Index");
             }
         }
+        //Öncelikle foreign keyleri silmelisin.
+        public ActionResult Sil(string id)
+        {
+            var silinecekDers = db.Dersler.Find(id);
+            Ders_Kazanim silinecekDersKazanim = db.Ders_Kazanim.Where(s => s.Ders_Kodu == id).FirstOrDefault();
+            if (silinecekDers == null)
+                return HttpNotFound();
+            db.Ders_Kazanim.Remove(silinecekDersKazanim);
+            db.Dersler.Remove(silinecekDers);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public ActionResult Kazanim(string id)
+        {
+            var model = db.Ders_Kazanim.Where(s => s.Ders_Kodu == id).ToList();
+            return View("Kazanim", model);
+        }
     }
 }

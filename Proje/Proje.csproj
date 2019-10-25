@@ -263,6 +263,7 @@
     <Content Include="Views\Ders\Index.cshtml" />
     <Content Include="Views\Ders\Ekle.cshtml" />
     <Content Include="Views\Ders\Guncelle.cshtml" />
+    <Content Include="Views\Ders\Kazanim.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
