@@ -1,0 +1,40 @@
+﻿@model Proje.ViewModels.DersViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a class="btn btn-success" href="/Ders/Ekle">Ders Ekle</a>
+<h2>Ders Listesi</h2>
+@using (Html.BeginForm("Index", "Ders", FormMethod.Post))
+{
+    <div class="form-group" style="height:100% !important;">
+        <label>Fakülte Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.Fakulte_No), "Seçiniz", new { @class = "form-control", style = "height:100%", onchange="this.form.submit()" })
+        @Html.ValidationMessageFor(m => m.Fakulte_No, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="height:100% !important;">
+        <label>Bölüm Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Bolum_Id, new SelectList(Model.Bolum, "Bolum_Id", "Bolum_Adi", Model.Bolum_Id), "Seçiniz", new { @class = "form-control", style = "height:100%", onchange = "this.form.submit()" })
+        @Html.ValidationMessageFor(m => m.Bolum_Id, "", new { @class = "text-danger" })
+    </div>
+}
+<table class="table table-bordered">
+    <thead>
+    <th>Ders Kodu</th>
+    <th>Ders Adı</th>
+    <th>Güncelle</th>
+    <th>Sil</th>
+    </thead>
+    <tbody>
+        @foreach (var dersler in Model.Dersler)
+        {
+            <tr>
+                <td>@dersler.Ders_Kodu</td>
+                <td><a href="/Ders/Kazanim/@dersler.Ders_Kodu">@dersler.Ders_Adi</a></td>
+                <td><a class="btn btn-primary" href="/Ders/Guncelle//@dersler.Ders_Kodu">Güncelle</a></td>
+                <td><a class="btn btn-warning" href="/Ders/Sil//@dersler.Ders_Kodu">Sil</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+

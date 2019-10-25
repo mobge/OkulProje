@@ -11,7 +11,8 @@ namespace Proje.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Bolum
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,7 +23,6 @@ namespace Proje.Models
             this.Sinav_Sonuclari = new HashSet<Sinav_Sonuclari>();
             this.Dersler = new HashSet<Dersler>();
         }
-    
         public int Bolum_Id { get; set; }
         public string Bolum_Adi { get; set; }
         public string Fakulte_No { get; set; }
