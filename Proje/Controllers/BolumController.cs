@@ -12,12 +12,16 @@ namespace Proje.Controllers
     public class BolumController : Controller
     {
         okulEntities db = new okulEntities();
-        public ActionResult Index()
+        public ActionResult Index(BolumViewModel bolumler)
         {
-            var bolumModel = db.Bolum.ToList();
-            return View("Index", bolumModel);
+            BolumViewModel model = new BolumViewModel()
+            {
+                Fakulte = db.Fakulte.ToList(),
+                Bolum = db.Bolum.Where(s => s.Fakulte_No == bolumler.Fakulte_No).ToList()
+            };
+            return View(model);
         }
-        public ActionResult Ekle()
+            public ActionResult Ekle()
         {
             BolumViewModel model = new BolumViewModel()
             {
@@ -57,16 +61,13 @@ namespace Proje.Controllers
         }
         public ActionResult Guncelle(int id)
         {
-            BolumViewModel bolumViewModel = new BolumViewModel();
-            bolumViewModel.Fakulte = db.Fakulte.ToList();
-            bolumViewModel.Bolum_Id = db.Bolum.Where(s => s.Bolum_Id == id).Select(s => s.Bolum_Id).FirstOrDefault();
-            bolumViewModel.Bolum_Adi = db.Bolum.Where(s => s.Bolum_Id == id).Select(s => s.Bolum_Adi).FirstOrDefault();
-            bolumViewModel.Bolum_Kazanim_Id = db.Bolum_Kazanim.Where(s => s.Bolum_Id == id).Select(s => s.Id).FirstOrDefault();
-            bolumViewModel.Bolum_Yeterlilik = db.Bolum_Kazanim.Where(s => s.Bolum_Id == id).Select(s => s.Bolum_Yeterlilik).FirstOrDefault();
-            return View("Guncelle", bolumViewModel);
+            BolumDetailViewModel bolumDetailViewModel = new BolumDetailViewModel();
+            bolumDetailViewModel.UpdatedBolum = (from a in db.Bolum join b in db.Fakulte on a.Fakulte_No equals b.Fakulte_No where a.Bolum_Id == id select new BolumDetail { Fakulte_Adi = b.Fakulte_Adi, Bolum_Id = a.Bolum_Id, Bolum_Adi = a.Bolum_Adi, Fakulte_No = b.Fakulte_No, Bolum_Kazanim_Id=db.Bolum_Kazanim.Where(s=>s.Bolum_Id==id).Select(s=>s.Id).FirstOrDefault(), Bolum_Yeterlilik=db.Bolum_Kazanim.Where(s=>s.Bolum_Id==id).Select(s=>s.Bolum_Yeterlilik).FirstOrDefault() }).FirstOrDefault();
+            bolumDetailViewModel.Fakulte = db.Fakulte.ToList();
+            return View("Guncelle", bolumDetailViewModel);
         }
         [HttpPost]
-        public ActionResult Guncelle(BolumViewModel bolumViewModel)
+        public ActionResult Guncelle(BolumDetailViewModel bolumDetail)
         {
             if (!ModelState.IsValid)
             {
@@ -74,14 +75,14 @@ namespace Proje.Controllers
             }
             else
             {
-                var guncellenecekBolum = db.Bolum.Find(bolumViewModel.Bolum_Id);
+                var guncellenecekBolum = db.Bolum.Find(bolumDetail.UpdatedBolum.Bolum_Id);
                 if (guncellenecekBolum == null)
                     return HttpNotFound();
-                guncellenecekBolum.Bolum_Id = bolumViewModel.Bolum_Id;
-                guncellenecekBolum.Bolum_Adi = bolumViewModel.Bolum_Adi;
-                guncellenecekBolum.Fakulte_No = bolumViewModel.Fakulte_No;
-                var guncellenecekBolumYeterlilik = db.Bolum_Kazanim.Find(bolumViewModel.Bolum_Kazanim_Id);
-                guncellenecekBolumYeterlilik.Bolum_Yeterlilik = bolumViewModel.Bolum_Yeterlilik;
+                guncellenecekBolum.Bolum_Id = bolumDetail.UpdatedBolum.Bolum_Id;
+                guncellenecekBolum.Bolum_Adi = bolumDetail.UpdatedBolum.Bolum_Adi;
+                guncellenecekBolum.Fakulte_No = bolumDetail.UpdatedBolum.Fakulte_No;
+                var guncellenecekBolumYeterlilik = db.Bolum_Kazanim.Find(bolumDetail.UpdatedBolum.Bolum_Kazanim_Id);
+                guncellenecekBolumYeterlilik.Bolum_Yeterlilik = bolumDetail.UpdatedBolum.Bolum_Yeterlilik;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

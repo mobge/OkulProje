@@ -17,5 +17,12 @@ namespace Proje.ViewModels
         public string Bolum_Yeterlilik { get; set; }
         public string Fakulte_No { get; set; }
         public IEnumerable<Fakulte> Fakulte { get; set; }
+        public IEnumerable<Bolum> Bolum { get; set; }
+    }
+    public class BolumDetailViewModel
+    {
+        public BolumDetail UpdatedBolum { get; set; }
+        public IEnumerable<Fakulte> Fakulte { get; set; }
+        public IEnumerable<Bolum> Bolum { get; set; }
     }
 }

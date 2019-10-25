@@ -1,11 +1,18 @@
-﻿@using Proje.Models
-@model List<Bolum>
+﻿@model Proje.ViewModels.BolumViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <a class="btn btn-success" href="/Bolum/Ekle">Bölüm Ekle</a>
 <h2>Bölüm Listesi</h2>
+@using (Html.BeginForm("Index", "Bolum", FormMethod.Post))
+{
+    <div class="form-group" style="height:100% !important;">
+        <label>Fakülte Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.Fakulte_No), "Seçiniz", new { @class = "form-control", style = "height:100%", onchange = "this.form.submit()" })
+        @Html.ValidationMessageFor(m => m.Fakulte_No, "", new { @class = "text-danger" })
+    </div>
+}
 <table class="table table-bordered">
     <thead>
     <th>Bölüm ID</th>
@@ -14,7 +21,7 @@
     <th>Sil</th>
     </thead>
     <tbody>
-        @foreach (var bolum in Model)
+        @foreach (var bolum in Model.Bolum)
         {
             <tr>
                 <td>@bolum.Bolum_Id</td>

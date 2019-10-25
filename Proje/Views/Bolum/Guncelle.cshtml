@@ -1,5 +1,5 @@
 ﻿@using Proje.ViewModels
-@model BolumViewModel
+@model BolumDetailViewModel
 @{
     /**/
 
@@ -11,22 +11,22 @@
 {
     <div class="form-group" style="height:100% !important;">
         <label>Fakülte Seçiniz:</label>
-        @Html.DropDownListFor(m => m.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.Fakulte_No), "Seçiniz", new { @class = "form-control", style = "height:100%" })
-        @Html.ValidationMessageFor(m => m.Fakulte_No, "", new { @class = "text-danger" })
+        @Html.DropDownListFor(m => m.UpdatedBolum.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.UpdatedBolum.Fakulte_No), (Model.Fakulte != null ? Model.UpdatedBolum.Fakulte_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%" })
+        @Html.ValidationMessageFor(m => m.UpdatedBolum.Fakulte_No, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Bolum_Adi)
-        @Html.TextBoxFor(m => m.Bolum_Adi, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Bolum_Adi, "", new { @class = "text-danger" })
+        @Html.LabelFor(m => m.UpdatedBolum.Bolum_Adi)
+        @Html.TextBoxFor(m => m.UpdatedBolum.Bolum_Adi, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.UpdatedBolum.Bolum_Adi, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         <label>Bölüm Yeterlilik: </label>
-        @Html.TextAreaFor(m => m.Bolum_Yeterlilik, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Bolum_Yeterlilik, "", new { @class = "text-danger" })
+        @Html.TextAreaFor(m => m.UpdatedBolum.Bolum_Yeterlilik, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.UpdatedBolum.Bolum_Yeterlilik, "", new { @class = "text-danger" })
     </div>
     <button type="submit" class="btn btn-primary">Kaydet</button>
     <span style="color:red;">@ViewBag.Mesaj</span>
-    @Html.HiddenFor(m => m.Bolum_Id)
-    @Html.HiddenFor(m => m.Bolum_Kazanim_Id)
+    @Html.HiddenFor(m => m.UpdatedBolum.Bolum_Id)
+    @Html.HiddenFor(m => m.UpdatedBolum.Bolum_Kazanim_Id)
 }
 

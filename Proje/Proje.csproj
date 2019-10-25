@@ -187,6 +187,7 @@
     <Compile Include="Models\Bolum_Kazanim.cs">
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Component\Bolum.cs" />
     <Compile Include="Models\Component\Dersler.cs" />
     <Compile Include="Models\Component\Kullanici.cs" />
     <Compile Include="Models\Dersler.cs">
