@@ -5,35 +5,35 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7bbf01d491f240a38b95b9b6e2913f26" Name="Diagram1">
-        <EntityTypeShape EntityType="okulModel.Acilan_Dersler" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="okulModel.Bolum" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
         <EntityTypeShape EntityType="okulModel.Bolum_Kazanim" Width="1.5" PointX="8" PointY="10.375" IsExpanded="true" />
         <EntityTypeShape EntityType="okulModel.Ders_Kazanim" Width="1.5" PointX="3" PointY="16.5" IsExpanded="true" />
         <EntityTypeShape EntityType="okulModel.Dersler" Width="1.5" PointX="0.75" PointY="0.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="okulModel.Donem_Yil" Width="1.5" PointX="0.75" PointY="10.125" IsExpanded="true" />
         <EntityTypeShape EntityType="okulModel.Fakulte" Width="1.5" PointX="0.75" PointY="12.875" IsExpanded="true" />
         <EntityTypeShape EntityType="okulModel.Kullanici" Width="1.5" PointX="0.75" PointY="15.375" IsExpanded="true" />
         <EntityTypeShape EntityType="okulModel.Roller" Width="1.5" PointX="5.75" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="okulModel.Sınav_Turu" Width="1.5" PointX="2.625" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="okulModel.Sinav_Grup" Width="1.5" PointX="3.75" PointY="14.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="okulModel.Sinav_Sonuclari" Width="1.5" PointX="6" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="okulModel.Soru_Kazanim" Width="1.5" PointX="7.75" PointY="1.5" IsExpanded="true" />
-        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Bolum" ManuallyRouted="false" />
-        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Dersler" ManuallyRouted="false" />
-        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Donem_Yil" ManuallyRouted="false" />
-        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Fakulte" ManuallyRouted="false" />
-        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Kullanici" ManuallyRouted="false" />
         <AssociationConnector Association="okulModel.FK_Bolum_Kazanim_Bolum" ManuallyRouted="false" />
-        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Bolum" ManuallyRouted="false" />
         <AssociationConnector Association="okulModel.FK_Ders_Kazanim_Dersler" ManuallyRouted="false" />
-        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Dersler" ManuallyRouted="false" />
-        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Donem_Yil" ManuallyRouted="false" />
-        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Fakulte" ManuallyRouted="false" />
-        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Sınav_Turu" ManuallyRouted="false" />
-        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Sinav_Grup" ManuallyRouted="false" />
         <AssociationConnector Association="okulModel.FK_Bolum_Bolum" />
         <AssociationConnector Association="okulModel.FK_Dersler_Bolum" />
         <AssociationConnector Association="okulModel.FK_Dersler_Fakulte" />
+        <EntityTypeShape EntityType="okulModel.Donem" Width="1.5" PointX="10.375" PointY="4.75" />
+        <EntityTypeShape EntityType="okulModel.Acilan_Dersler" Width="1.5" PointX="15.625" PointY="7.375" />
+        <EntityTypeShape EntityType="okulModel.Sinav_Sonuclari" Width="1.5" PointX="13.5" PointY="7.5" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Bolum" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Dersler" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Donem" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Fakulte" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Kullanici" />
+        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Bolum" />
+        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Dersler" />
+        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Donem" />
+        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Fakulte" />
+        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Sınav_Turu" />
+        <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Sinav_Grup" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

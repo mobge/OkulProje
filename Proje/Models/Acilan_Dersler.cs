@@ -15,16 +15,16 @@ namespace Proje.Models
     public partial class Acilan_Dersler
     {
         public int Id { get; set; }
+        public int Donem_Id { get; set; }
         public string Fakulte_No { get; set; }
         public int Bolum_Id { get; set; }
         public string Ders_Kodu { get; set; }
-        public int Donem_Yil_Id { get; set; }
         public string Sinif { get; set; }
         public string Sicil_No { get; set; }
     
         public virtual Bolum Bolum { get; set; }
         public virtual Dersler Dersler { get; set; }
-        public virtual Donem_Yil Donem_Yil { get; set; }
+        public virtual Donem Donem { get; set; }
         public virtual Fakulte Fakulte { get; set; }
         public virtual Kullanici Kullanici { get; set; }
     }

@@ -25,18 +25,18 @@ namespace Proje.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Acilan_Dersler> Acilan_Dersler { get; set; }
         public virtual DbSet<Bolum> Bolum { get; set; }
         public virtual DbSet<Bolum_Kazanim> Bolum_Kazanim { get; set; }
         public virtual DbSet<Ders_Kazanim> Ders_Kazanim { get; set; }
         public virtual DbSet<Dersler> Dersler { get; set; }
-        public virtual DbSet<Donem_Yil> Donem_Yil { get; set; }
         public virtual DbSet<Fakulte> Fakulte { get; set; }
         public virtual DbSet<Kullanici> Kullanici { get; set; }
         public virtual DbSet<Roller> Roller { get; set; }
         public virtual DbSet<Sınav_Turu> Sınav_Turu { get; set; }
         public virtual DbSet<Sinav_Grup> Sinav_Grup { get; set; }
-        public virtual DbSet<Sinav_Sonuclari> Sinav_Sonuclari { get; set; }
         public virtual DbSet<Soru_Kazanim> Soru_Kazanim { get; set; }
+        public virtual DbSet<Donem> Donem { get; set; }
+        public virtual DbSet<Acilan_Dersler> Acilan_Dersler { get; set; }
+        public virtual DbSet<Sinav_Sonuclari> Sinav_Sonuclari { get; set; }
     }
 }

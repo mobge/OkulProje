@@ -17,22 +17,22 @@ namespace Proje.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Fakulte()
         {
-            this.Acilan_Dersler = new HashSet<Acilan_Dersler>();
-            this.Sinav_Sonuclari = new HashSet<Sinav_Sonuclari>();
             this.Bolum = new HashSet<Bolum>();
             this.Dersler = new HashSet<Dersler>();
+            this.Acilan_Dersler = new HashSet<Acilan_Dersler>();
+            this.Sinav_Sonuclari = new HashSet<Sinav_Sonuclari>();
         }
     
         public string Fakulte_No { get; set; }
         public string Fakulte_Adi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Acilan_Dersler> Acilan_Dersler { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sinav_Sonuclari> Sinav_Sonuclari { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bolum> Bolum { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dersler> Dersler { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Acilan_Dersler> Acilan_Dersler { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sinav_Sonuclari> Sinav_Sonuclari { get; set; }
     }
 }

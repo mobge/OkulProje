@@ -1,0 +1,28 @@
+﻿@model Proje.ViewModels.DonemYilViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a class="btn btn-success" href="/Donem/Ekle">Dönem Ekle</a>
+<h2>Dönem Listesi</h2>
+<table class="table table-bordered">
+    <thead>
+    <th>Dönem Adı</th>
+    <th>Güncelle</th>
+    <th>Sil</th>
+    </thead>
+    <tbody>
+        @foreach (var donem in Model.Donemler)
+        {
+            <tr>
+                <td>@donem.Donem_Adi</td>
+                <td><a class="btn btn-primary" href="/Donem/Guncelle/@donem.Donem_Id">Güncelle</a></td>
+                <td><a class="btn btn-warning" href="/Donem/Sil/@donem.Donem_Id">Sil</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+

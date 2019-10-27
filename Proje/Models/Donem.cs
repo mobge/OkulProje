@@ -12,17 +12,16 @@ namespace Proje.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Donem_Yil
+    public partial class Donem
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Donem_Yil()
+        public Donem()
         {
             this.Acilan_Dersler = new HashSet<Acilan_Dersler>();
             this.Sinav_Sonuclari = new HashSet<Sinav_Sonuclari>();
         }
     
         public int Donem_Id { get; set; }
-        public string Yıl { get; set; }
         public string Donem_Adi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

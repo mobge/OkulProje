@@ -1,0 +1,20 @@
+﻿@model Proje.ViewModels.DonemYilViewModel
+@{
+    ViewBag.Title = "Güncelle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Dönem Güncelle</h2>
+@using (Html.BeginForm("Guncelle", "Donem", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Donem_Adi)
+        @Html.TextBoxFor(m => m.Donem_Adi, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Donem_Adi, "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <span style="color:red;">@ViewBag.Mesaj</span>
+    @Html.HiddenFor(m => m.Donem_Id);
+}
+
+

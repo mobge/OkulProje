@@ -11,30 +11,30 @@ namespace Proje.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Bolum
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Bolum()
         {
-            this.Acilan_Dersler = new HashSet<Acilan_Dersler>();
             this.Bolum_Kazanim = new HashSet<Bolum_Kazanim>();
-            this.Sinav_Sonuclari = new HashSet<Sinav_Sonuclari>();
             this.Dersler = new HashSet<Dersler>();
+            this.Acilan_Dersler = new HashSet<Acilan_Dersler>();
+            this.Sinav_Sonuclari = new HashSet<Sinav_Sonuclari>();
         }
+    
         public int Bolum_Id { get; set; }
         public string Bolum_Adi { get; set; }
         public string Fakulte_No { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Acilan_Dersler> Acilan_Dersler { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bolum_Kazanim> Bolum_Kazanim { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sinav_Sonuclari> Sinav_Sonuclari { get; set; }
         public virtual Fakulte Fakulte { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dersler> Dersler { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Acilan_Dersler> Acilan_Dersler { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sinav_Sonuclari> Sinav_Sonuclari { get; set; }
     }
 }
