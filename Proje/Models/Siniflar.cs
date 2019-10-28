@@ -12,27 +12,17 @@ namespace Proje.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Dersler
+    public partial class Siniflar
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Dersler()
+        public Siniflar()
         {
-            this.Ders_Kazanim = new HashSet<Ders_Kazanim>();
-            this.Sinav_Sonuclari = new HashSet<Sinav_Sonuclari>();
             this.Acilan_Dersler = new HashSet<Acilan_Dersler>();
         }
     
-        public string Ders_Kodu { get; set; }
-        public string Ders_Adi { get; set; }
-        public string Fakulte_No { get; set; }
-        public int Bolum_Id { get; set; }
+        public int Sinif_Id { get; set; }
+        public int Sinif_No { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ders_Kazanim> Ders_Kazanim { get; set; }
-        public virtual Bolum Bolum { get; set; }
-        public virtual Fakulte Fakulte { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sinav_Sonuclari> Sinav_Sonuclari { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Acilan_Dersler> Acilan_Dersler { get; set; }
     }

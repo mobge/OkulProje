@@ -21,19 +21,21 @@
         <AssociationConnector Association="okulModel.FK_Dersler_Bolum" />
         <AssociationConnector Association="okulModel.FK_Dersler_Fakulte" />
         <EntityTypeShape EntityType="okulModel.Donem" Width="1.5" PointX="10.375" PointY="4.75" />
-        <EntityTypeShape EntityType="okulModel.Acilan_Dersler" Width="1.5" PointX="15.625" PointY="7.375" />
         <EntityTypeShape EntityType="okulModel.Sinav_Sonuclari" Width="1.5" PointX="13.5" PointY="7.5" />
-        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Bolum" />
-        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Dersler" />
-        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Donem" />
-        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Fakulte" />
-        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Kullanici" />
         <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Bolum" />
         <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Dersler" />
         <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Donem" />
         <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Fakulte" />
         <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Sınav_Turu" />
         <AssociationConnector Association="okulModel.FK_Sinav_Sonuclari_Sinav_Grup" />
+        <EntityTypeShape EntityType="okulModel.Acilan_Dersler" Width="1.5" PointX="18.375" PointY="7.875" />
+        <EntityTypeShape EntityType="okulModel.Siniflar" Width="1.5" PointX="16.125" PointY="4.75" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Bolum" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Dersler" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Donem" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Fakulte" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Kullanici" />
+        <AssociationConnector Association="okulModel.FK_Acilan_Dersler_Siniflar" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

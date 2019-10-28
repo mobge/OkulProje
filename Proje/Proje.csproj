@@ -170,6 +170,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BolumController.cs" />
+    <Compile Include="Controllers\DersAtamaController.cs" />
     <Compile Include="Controllers\DersController.cs" />
     <Compile Include="Controllers\DonemController.cs" />
     <Compile Include="Controllers\FakulteController.cs" />
@@ -189,6 +190,7 @@
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Component\Bolum.cs" />
+    <Compile Include="Models\Component\DersAtama.cs" />
     <Compile Include="Models\Component\Dersler.cs" />
     <Compile Include="Models\Component\Kullanici.cs" />
     <Compile Include="Models\Dersler.cs">
@@ -230,6 +232,9 @@
     <Compile Include="Models\Sinav_Sonuclari.cs">
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Siniflar.cs">
+      <DependentUpon>OkulModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Soru_Kazanim.cs">
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
@@ -238,6 +243,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BolumViewModel.cs" />
+    <Compile Include="ViewModels\DersAtamaViewModel.cs" />
     <Compile Include="ViewModels\DersViewModel.cs" />
     <Compile Include="ViewModels\DonemYilViewModel.cs" />
     <Compile Include="ViewModels\FakulteViewModel.cs" />
@@ -270,6 +276,9 @@
     <Content Include="Views\Donem\Index.cshtml" />
     <Content Include="Views\Donem\Ekle.cshtml" />
     <Content Include="Views\Donem\Guncelle.cshtml" />
+    <Content Include="Views\DersAtama\Index.cshtml" />
+    <Content Include="Views\DersAtama\Ekle.cshtml" />
+    <Content Include="Views\DersAtama\Guncelle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

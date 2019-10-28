@@ -1,0 +1,55 @@
+﻿@using Proje.ViewModels
+@model DersAtamaViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a class="btn btn-success" href="/DersAtama/Ekle">Ders Atamak için Tıklayınız</a>
+<h2>Atanan Dersler Listesi</h2>
+@using (Html.BeginForm("Index", "DersAtama", FormMethod.Post))
+{
+    <div class="form-group" style="height:100% !important;">
+        <label>Dönem Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Donem_Id, new SelectList(Model.Donem, "Donem_Id", "Donem_Adi", Model.Donem_Id), "Seçiniz", new { @class = "form-control", style = "height:100%" })
+        @Html.ValidationMessageFor(m => m.Donem_Id, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="height:100% !important;">
+        <label>Fakülte Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.Fakulte_No), "Seçiniz", new { @class = "form-control", style = "height:100%", onchange = "this.form.submit()" })
+        @Html.ValidationMessageFor(m => m.Fakulte_No, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="height:100% !important;">
+        <label>Bölüm Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Bolum_Id, new SelectList(Model.Bolum, "Bolum_Id", "Bolum_Adi", Model.Bolum_Id), "Seçiniz", new { @class = "form-control", style = "height:100%", onchange = "this.form.submit()" })
+        @Html.ValidationMessageFor(m => m.Bolum_Id, "", new { @class = "text-danger" })
+    </div>
+    @Html.HiddenFor(m => m.Id)
+}
+<table class="table table-bordered">
+    <thead>
+    <th>Dönem Adı</th>
+    <th>Fakülte Adı</th>
+    <th>Bölüm Adı</th>
+    <th>Dersin Adı</th>
+    <th>Sınıf</th>
+    <th>Öğretim Görevlisi Sicil No</th>
+    <th>Güncelle</th>
+    <th>Sil</th>
+    </thead>
+    <tbody>
+        @foreach (var dersler in Model.DersAtama)
+        {
+            <tr>
+                <td>@dersler.Donem_Id</td>
+                <td>@dersler.Fakulte_No</td>
+                <td>@dersler.Bolum_Id</td>
+                <td>@dersler.Ders_Kodu</td>
+                <td>@dersler.Sinif</td>
+                <td>@dersler.Sicil_No</td>
+                <td><a class="btn btn-primary" href="/DersAtama/Guncelle/@dersler.Id">Güncelle</a></td>
+                <td><a class="btn btn-warning" href="/DersAtama/Sil/@dersler.Id">Sil</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
