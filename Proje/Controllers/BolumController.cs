@@ -62,7 +62,7 @@ namespace Proje.Controllers
         public ActionResult Guncelle(int id)
         {
             BolumDetailViewModel bolumDetailViewModel = new BolumDetailViewModel();
-            bolumDetailViewModel.UpdatedBolum = (from a in db.Bolum join b in db.Fakulte on a.Fakulte_No equals b.Fakulte_No where a.Bolum_Id == id select new BolumDetail { Fakulte_Adi = b.Fakulte_Adi, Bolum_Id = a.Bolum_Id, Bolum_Adi = a.Bolum_Adi, Fakulte_No = b.Fakulte_No, Bolum_Kazanim_Id=db.Bolum_Kazanim.Where(s=>s.Bolum_Id==id).Select(s=>s.Id).FirstOrDefault(), Bolum_Yeterlilik=db.Bolum_Kazanim.Where(s=>s.Bolum_Id==id).Select(s=>s.Bolum_Yeterlilik).FirstOrDefault() }).FirstOrDefault();
+            bolumDetailViewModel.UpdatedBolum = (from a in db.Bolum join b in db.Fakulte on a.Fakulte_No equals b.Fakulte_No where a.Bolum_Id == id select new BolumDetail {Bolum_Id = a.Bolum_Id, Bolum_Adi = a.Bolum_Adi, Fakulte_No = b.Fakulte_No, Bolum_Kazanim_Id=db.Bolum_Kazanim.Where(s=>s.Bolum_Id==id).Select(s=>s.Id).FirstOrDefault(), Bolum_Yeterlilik=db.Bolum_Kazanim.Where(s=>s.Bolum_Id==id).Select(s=>s.Bolum_Yeterlilik).FirstOrDefault() }).FirstOrDefault();
             bolumDetailViewModel.Fakulte = db.Fakulte.ToList();
             return View("Guncelle", bolumDetailViewModel);
         }

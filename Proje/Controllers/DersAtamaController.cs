@@ -76,11 +76,11 @@ namespace Proje.Controllers
         public ActionResult Guncelle(int id)
         {
             DersAtamaDetailViewModel dersAtamaDetailViewModel = new DersAtamaDetailViewModel();
-            dersAtamaDetailViewModel.UpdatedDersAtama = (from a in db.Acilan_Dersler join b in db.Bolum on a.Bolum_Id equals b.Bolum_Id join c in db.Fakulte on a.Fakulte_No equals c.Fakulte_No join d in db.Kullanici on a.Sicil_No equals d.Sicil_No join e in db.Dersler on a.Ders_Kodu equals e.Ders_Kodu join f in db.Donem on a.Donem_Id equals f.Donem_Id join h in db.Siniflar on a.Sinif equals h.Sinif_Id where a.Id == id select new DersAtamaDetail { Fakulte_Adi=c.Fakulte_Adi , Bolum_Adi = b.Bolum_Adi, Bolum_Id = a.Bolum_Id, Fakulte_No = a.Fakulte_No, Ders_Adi=e.Ders_Adi, Ders_Kodu=a.Ders_Kodu, Sicil_No=a.Sicil_No, KullaniciAd=d.Ad, Donem_Id=a.Donem_Id, Donem_Adi=f.Donem_Adi, Sinif=a.Sinif, Sinif_No=h.Sinif_No, Id=a.Id}).FirstOrDefault();
+            dersAtamaDetailViewModel.UpdatedDersAtama = (from a in db.Acilan_Dersler join b in db.Bolum on a.Bolum_Id equals b.Bolum_Id join c in db.Fakulte on a.Fakulte_No equals c.Fakulte_No join d in db.Kullanici on a.Sicil_No equals d.Sicil_No join e in db.Dersler on a.Ders_Kodu equals e.Ders_Kodu join f in db.Donem on a.Donem_Id equals f.Donem_Id join h in db.Siniflar on a.Sinif equals h.Sinif_Id where a.Id == id select new DersAtamaDetail { Bolum_Id = a.Bolum_Id, Fakulte_No = a.Fakulte_No, Ders_Kodu=a.Ders_Kodu, Sicil_No=a.Sicil_No, Donem_Id=a.Donem_Id, Sinif_No=h.Sinif_No, Id=a.Id}).FirstOrDefault();
             dersAtamaDetailViewModel.Fakulte = db.Fakulte.ToList();
             dersAtamaDetailViewModel.Bolum = db.Bolum.ToList();
             dersAtamaDetailViewModel.Dersler = db.Dersler.ToList();
-            dersAtamaDetailViewModel.Kullanici = db.Kullanici.ToList();
+            dersAtamaDetailViewModel.Kullanici = db.Kullanici.Where(s => s.Rol_Id == 2).ToList();
             dersAtamaDetailViewModel.Siniflar = db.Siniflar.ToList();
             dersAtamaDetailViewModel.Donem = db.Donem.ToList();
             return View("Guncelle", dersAtamaDetailViewModel);
@@ -104,7 +104,7 @@ namespace Proje.Controllers
                 guncellenecekDersAtama.Sicil_No = dersAtamaDetail.UpdatedDersAtama.Sicil_No;
                 guncellenecekDersAtama.Sinif = dersAtamaDetail.UpdatedDersAtama.Sinif;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return View("Guncelle");
             }
         }
         public ActionResult Sil(int id)
