@@ -25,6 +25,13 @@ namespace Proje.ViewModels
         public IEnumerable<Fakulte> Fakulte { get; set; }
         public IEnumerable<Bolum> Bolum { get; set; }
         public IEnumerable<Dersler> Dersler { get; set; }
+        //kiyaslama için oluşturulan stringlerin modelde tanımı.
+        public string[] ad { get; set; }
+        public string[] soyad { get; set; }
+        public string[] numara { get; set; }
+        public string[] grup { get; set; }
+        public string[] ogrCevap { get; set; }
+        public string[] ogrPuan { get; set; }
     }
     public class DersDetailViewModel
     {
