@@ -1,0 +1,49 @@
+﻿@using Proje.ViewModels
+@model SinavOkutmaViewModel
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sınav Okutma</h2>
+@using (Html.BeginForm("SinavOkut", "SinavOkutma", FormMethod.Post, new { enctype = "multipart/form-data"}))
+{
+    <div class="form-group" style="height:100% !important;">
+        <label>Dönem Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Donem_Id, new SelectList(Model.Donem, "Donem_Id", "Donem_Adi", Model.Donem_Id), "Seçiniz", new { @class = "form-control", style = "height:100%" })
+        @Html.ValidationMessageFor(m => m.Donem_Id, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="height:100% !important;">
+        <label>Fakülte Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.Fakulte_No), "Seçiniz", new { @class = "form-control", style = "height:100%"})
+        @Html.ValidationMessageFor(m => m.Fakulte_No, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="height:100% !important;">
+        <label>Bölüm Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Bolum_ıd, new SelectList(Model.Bolum, "Bolum_Id", "Bolum_Adi", Model.Bolum_ıd), "Seçiniz", new { @class = "form-control", style = "height:100%" })
+        @Html.ValidationMessageFor(m => m.Bolum_ıd, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="height:100% !important;">
+        <label>Ders Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Ders_Kodu, new SelectList(Model.Dersler, "Ders_Kodu", "Ders_Adi", Model.Ders_Kodu), "Seçiniz", new { @class = "form-control", style = "height:100%" })
+        @Html.ValidationMessageFor(m => m.Ders_Kodu, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="height:100% !important;">
+        <label>Sınav Türü Seçiniz:</label>
+        @Html.DropDownListFor(m => m.Sinav_Turu_Id, new SelectList(Model.SinavTuru, "Id", "Sinav_Turu", Model.Sinav_Turu_Id), "Seçiniz", new { @class = "form-control", style = "height:100%" })
+        @Html.ValidationMessageFor(m => m.Sinav_Turu_Id, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label>Cevap Anahtarı:</label>
+        <input type="file" id="cevapanahtari" name="cevapanahtari" />
+    </div>
+    <div class="form-group">
+        <label>Sınav Sonuçları:</label>
+        <input type="file" id="sinavsonuclari" name="sinavsonuclari"/>
+    </div>
+    @Html.HiddenFor(m => m.Id)
+    <button type="submit" class="btn btn-primary">Sonuç</button>
+}
+

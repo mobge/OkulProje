@@ -18,6 +18,7 @@ namespace Proje.Models
         public Kullanici()
         {
             this.Acilan_Dersler = new HashSet<Acilan_Dersler>();
+            this.Sinav_Sonuclari = new HashSet<Sinav_Sonuclari>();
         }
     
         public string Sicil_No { get; set; }
@@ -28,5 +29,7 @@ namespace Proje.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Acilan_Dersler> Acilan_Dersler { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sinav_Sonuclari> Sinav_Sonuclari { get; set; }
     }
 }

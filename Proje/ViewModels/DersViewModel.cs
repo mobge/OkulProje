@@ -32,6 +32,7 @@ namespace Proje.ViewModels
         public string[] grup { get; set; }
         public string[] ogrCevap { get; set; }
         public string[] ogrPuan { get; set; }
+        public bool[] IsSelected { get; set; }
     }
     public class DersDetailViewModel
     {
