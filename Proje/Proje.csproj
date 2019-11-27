@@ -177,6 +177,7 @@
     <Compile Include="Controllers\BolumController.cs" />
     <Compile Include="Controllers\DersAtamaController.cs" />
     <Compile Include="Controllers\DersController.cs" />
+    <Compile Include="Controllers\DerslerimController.cs" />
     <Compile Include="Controllers\DonemController.cs" />
     <Compile Include="Controllers\FakulteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -244,9 +245,6 @@
     <Compile Include="Models\Soru_Kazanim.cs">
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>OkulModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Sınav_Turu.cs">
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
@@ -254,6 +252,7 @@
     <Compile Include="Security\ProjeRoleProvider.cs" />
     <Compile Include="ViewModels\BolumViewModel.cs" />
     <Compile Include="ViewModels\DersAtamaViewModel.cs" />
+    <Compile Include="ViewModels\DerslerimViewModel.cs" />
     <Compile Include="ViewModels\DersViewModel.cs" />
     <Compile Include="ViewModels\DonemYilViewModel.cs" />
     <Compile Include="ViewModels\FakulteViewModel.cs" />
@@ -293,6 +292,7 @@
     <Content Include="Views\Ders\Kiyasla.cshtml" />
     <Content Include="Views\SinavOkutma\Index.cshtml" />
     <Content Include="Views\SinavOkutma\Kiyasla.cshtml" />
+    <Content Include="Views\Derslerim\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

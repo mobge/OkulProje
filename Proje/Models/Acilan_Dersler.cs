@@ -19,8 +19,8 @@ namespace Proje.Models
         public string Fakulte_No { get; set; }
         public int Bolum_Id { get; set; }
         public string Ders_Kodu { get; set; }
-        public string Sicil_No { get; set; }
         public int Sinif { get; set; }
+        public string Sicil_No { get; set; }
     
         public virtual Bolum Bolum { get; set; }
         public virtual Dersler Dersler { get; set; }

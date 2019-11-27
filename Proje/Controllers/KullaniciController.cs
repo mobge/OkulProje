@@ -9,13 +9,14 @@ using System.Web.Mvc;
 
 namespace Proje.Controllers
 {
+    [Authorize(Roles = "1")]
     public class KullaniciController : Controller
     {
         okulEntities db = new okulEntities();
         public ActionResult Index()
         {
             KullaniciDetailViewModel kullaniciDetailViewModel = new KullaniciDetailViewModel();
-            kullaniciDetailViewModel.KullaniciList = (from a in db.Kullanici join b in db.Roller on a.Rol_Id equals b.Rol_Id select new KullaniciDetail { Sicil_No = a.Sicil_No, Ad = a.Ad, Soyad = a.Soyad, Sifre = a.Sifre, RolAdi = b.Rol_Adi, Rol_Id=a.Rol_Id }).ToList();
+            kullaniciDetailViewModel.KullaniciList = (from a in db.Kullanici join b in db.Roller on a.Rol_Id equals b.Rol_Id select new KullaniciDetail { Sicil_No = a.Sicil_No, Ad = a.Ad, Soyad = a.Soyad, Sifre = a.Sifre, RolAdi = b.Rol_Adi, Rol_Id = a.Rol_Id }).ToList();
             return View("Index", kullaniciDetailViewModel);
         }
         public ActionResult Yeni()
@@ -45,7 +46,7 @@ namespace Proje.Controllers
             {
                 ViewBag.Mesaj = "Hata, eklemeye çalıştığınız Kişi sistemde mevcut...";
             }
-            return View("Yeni",model);
+            return View("Yeni", model);
         }
         public ActionResult Guncelle(int id)
         {
@@ -77,10 +78,21 @@ namespace Proje.Controllers
         public ActionResult Sil(int id)
         {
             var silinecekKullanici = db.Kullanici.Find(id.ToString());
+            Acilan_Dersler kullaniciAcilanDers = db.Acilan_Dersler.Where(s => s.Sicil_No == id.ToString()).FirstOrDefault();
             if (silinecekKullanici == null)
                 return HttpNotFound();
-            db.Kullanici.Remove(silinecekKullanici);
-            db.SaveChanges();
+            if (silinecekKullanici != null && kullaniciAcilanDers != null)
+            {
+                db.Acilan_Dersler.Remove(kullaniciAcilanDers);
+                db.Kullanici.Remove(silinecekKullanici);
+                db.SaveChanges();
+            }
+            else if (silinecekKullanici != null && kullaniciAcilanDers == null)
+            {
+                db.Kullanici.Remove(silinecekKullanici);
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Index");
         }
     }

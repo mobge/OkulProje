@@ -9,8 +9,9 @@ using System.Web.Mvc;
 
 namespace Proje.Controllers
 {
+    [Authorize(Roles = "1")]
     public class FakulteController : Controller
-    {
+    {      
         okulEntities db = new okulEntities();
         public ActionResult Index()
         {
@@ -71,8 +72,45 @@ namespace Proje.Controllers
             var silinecekFakulte = db.Fakulte.Find(id.ToString());
             if (silinecekFakulte == null)
                 return HttpNotFound();
-            db.Fakulte.Remove(silinecekFakulte);
-            db.SaveChanges();
+            Bolum silinecekBolum = db.Bolum.Where(s => s.Fakulte_No == id.ToString()).FirstOrDefault();
+            Dersler silinecekDersFakulte = db.Dersler.Where(s => s.Fakulte_No == id.ToString()).FirstOrDefault();
+            Acilan_Dersler silinecekAcilanFakulte = db.Acilan_Dersler.Where(s => s.Fakulte_No == id.ToString()).FirstOrDefault();
+            if(silinecekBolum!=null && silinecekDersFakulte!=null && silinecekAcilanFakulte!=null)
+            {
+                db.Bolum.Remove(silinecekBolum);
+                Bolum_Kazanim silinecekBolumKazanim = db.Bolum_Kazanim.Where(s => s.Bolum_Id == silinecekBolum.Bolum_Id).FirstOrDefault();
+                db.Bolum_Kazanim.Remove(silinecekBolumKazanim);
+                Ders_Kazanim silinecekDersKazanim = db.Ders_Kazanim.Where(s => s.Ders_Kodu == silinecekDersFakulte.Ders_Kodu).FirstOrDefault();
+                db.Dersler.Remove(silinecekDersFakulte);
+                db.Ders_Kazanim.Remove(silinecekDersKazanim);
+                db.Acilan_Dersler.Remove(silinecekAcilanFakulte);
+                db.Fakulte.Remove(silinecekFakulte);
+                db.SaveChanges();
+            }
+            else if(silinecekBolum!=null && silinecekDersFakulte!=null && silinecekAcilanFakulte==null)
+            {
+                db.Bolum.Remove(silinecekBolum);
+                Bolum_Kazanim silinecekBolumKazanim = db.Bolum_Kazanim.Where(s => s.Bolum_Id == silinecekBolum.Bolum_Id).FirstOrDefault();
+                db.Bolum_Kazanim.Remove(silinecekBolumKazanim);
+                Ders_Kazanim silinecekDersKazanim = db.Ders_Kazanim.Where(s => s.Ders_Kodu == silinecekDersFakulte.Ders_Kodu).FirstOrDefault();
+                db.Dersler.Remove(silinecekDersFakulte);
+                db.Ders_Kazanim.Remove(silinecekDersKazanim);
+                db.Fakulte.Remove(silinecekFakulte);
+                db.SaveChanges();
+            }
+            else if(silinecekBolum!=null && silinecekDersFakulte==null && silinecekAcilanFakulte==null)
+            {
+                db.Bolum.Remove(silinecekBolum);
+                Bolum_Kazanim silinecekBolumKazanim = db.Bolum_Kazanim.Where(s => s.Bolum_Id == silinecekBolum.Bolum_Id).FirstOrDefault();
+                db.Bolum_Kazanim.Remove(silinecekBolumKazanim);
+                db.Fakulte.Remove(silinecekFakulte);
+                db.SaveChanges();
+            }
+            else
+            {
+                db.Fakulte.Remove(silinecekFakulte);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
         

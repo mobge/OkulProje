@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Proje.Controllers
 {
+    [Authorize(Roles = "1")]
     public class BolumController : Controller
     {
         okulEntities db = new okulEntities();
@@ -21,7 +22,7 @@ namespace Proje.Controllers
             };
             return View(model);
         }
-            public ActionResult Ekle()
+        public ActionResult Ekle()
         {
             BolumViewModel model = new BolumViewModel()
             {
@@ -62,7 +63,7 @@ namespace Proje.Controllers
         public ActionResult Guncelle(int id)
         {
             BolumDetailViewModel bolumDetailViewModel = new BolumDetailViewModel();
-            bolumDetailViewModel.UpdatedBolum = (from a in db.Bolum join b in db.Fakulte on a.Fakulte_No equals b.Fakulte_No where a.Bolum_Id == id select new BolumDetail {Bolum_Id = a.Bolum_Id, Bolum_Adi = a.Bolum_Adi, Fakulte_No = b.Fakulte_No, Bolum_Kazanim_Id=db.Bolum_Kazanim.Where(s=>s.Bolum_Id==id).Select(s=>s.Id).FirstOrDefault(), Bolum_Yeterlilik=db.Bolum_Kazanim.Where(s=>s.Bolum_Id==id).Select(s=>s.Bolum_Yeterlilik).FirstOrDefault() }).FirstOrDefault();
+            bolumDetailViewModel.UpdatedBolum = (from a in db.Bolum join b in db.Fakulte on a.Fakulte_No equals b.Fakulte_No where a.Bolum_Id == id select new BolumDetail { Bolum_Id = a.Bolum_Id, Bolum_Adi = a.Bolum_Adi, Fakulte_No = b.Fakulte_No, Bolum_Kazanim_Id = db.Bolum_Kazanim.Where(s => s.Bolum_Id == id).Select(s => s.Id).FirstOrDefault(), Bolum_Yeterlilik = db.Bolum_Kazanim.Where(s => s.Bolum_Id == id).Select(s => s.Bolum_Yeterlilik).FirstOrDefault() }).FirstOrDefault();
             bolumDetailViewModel.Fakulte = db.Fakulte.ToList();
             return View("Guncelle", bolumDetailViewModel);
         }
@@ -91,18 +92,41 @@ namespace Proje.Controllers
         public ActionResult Sil(int id)
         {
             var silinecekBolum = db.Bolum.Find(id);
-            Bolum_Kazanim silinecekBolumKazanim = db.Bolum_Kazanim.Where(s => s.Bolum_Id == id).First();
-                if (silinecekBolum == null)
+            if (silinecekBolum == null)
                 return HttpNotFound();
+            Bolum_Kazanim silinecekBolumKazanim = db.Bolum_Kazanim.Where(s => s.Bolum_Id == id).FirstOrDefault();
             db.Bolum_Kazanim.Remove(silinecekBolumKazanim);
-            db.Bolum.Remove(silinecekBolum);
-            db.SaveChanges();
+            Dersler silinecekDersBolum = db.Dersler.Where(s => s.Bolum_Id == id).FirstOrDefault();
+            Acilan_Dersler silinecekAcilanBolum = db.Acilan_Dersler.Where(s => s.Bolum_Id == id).FirstOrDefault();
+            if (silinecekDersBolum!=null && silinecekAcilanBolum==null)
+            {
+                Ders_Kazanim silinecekDersKazanim = db.Ders_Kazanim.Where(s => s.Ders_Kodu == silinecekDersBolum.Ders_Kodu).FirstOrDefault();
+                db.Dersler.Remove(silinecekDersBolum);
+                db.Ders_Kazanim.Remove(silinecekDersKazanim);
+                db.Bolum.Remove(silinecekBolum);
+                db.SaveChanges();
+            }
+            else if(silinecekDersBolum!=null && silinecekAcilanBolum!=null)
+            {
+                Ders_Kazanim silinecekDersKazanim = db.Ders_Kazanim.Where(s => s.Ders_Kodu == silinecekDersBolum.Ders_Kodu).FirstOrDefault();
+                db.Dersler.Remove(silinecekDersBolum);
+                db.Ders_Kazanim.Remove(silinecekDersKazanim);
+                db.Acilan_Dersler.Remove(silinecekAcilanBolum);
+                db.Bolum.Remove(silinecekBolum);
+                db.SaveChanges();
+            }
+            else
+            {
+                db.Bolum.Remove(silinecekBolum);
+                db.SaveChanges();
+            }
+            
             return RedirectToAction("Index");
-        }
-        public ActionResult Kazanim(int id)
-        {
-            var model = db.Bolum_Kazanim.Where(s => s.Bolum_Id == id).ToList();
-            return View("Kazanim", model);
-        }
     }
+    public ActionResult Kazanim(int id)
+    {
+        var model = db.Bolum_Kazanim.Where(s => s.Bolum_Id == id).ToList();
+        return View("Kazanim", model);
+    }
+}
 }

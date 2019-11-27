@@ -14,7 +14,7 @@ namespace Proje.Models
     
     public partial class Roller
     {
-        public int Rol_Id { get; set; }
+        public string Rol_Id { get; set; }
         public string Rol_Adi { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace Proje.Models
         public virtual Dersler Dersler { get; set; }
         public virtual Donem Donem { get; set; }
         public virtual Fakulte Fakulte { get; set; }
-        public virtual Kullanici Kullanici { get; set; }
         public virtual Sınav_Turu Sınav_Turu { get; set; }
+        public virtual Kullanici Kullanici { get; set; }
     }
 }

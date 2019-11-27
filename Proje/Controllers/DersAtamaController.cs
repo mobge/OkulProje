@@ -20,7 +20,7 @@ namespace Proje.Controllers
                 Fakulte = db.Fakulte.ToList(),
                 Bolum = db.Bolum.Where(s => s.Fakulte_No == dersler.Fakulte_No).ToList(),
                 DersAtama = db.Acilan_Dersler.Where(s => s.Bolum_Id == dersler.Bolum_Id).Where(s => s.Fakulte_No == dersler.Fakulte_No).ToList(),
-            };
+        };
             return View(model);
         }
         public ActionResult Ekle(DersAtamaViewModel dersler)
@@ -31,7 +31,7 @@ namespace Proje.Controllers
                 Fakulte = db.Fakulte.ToList(),
                 Bolum = db.Bolum.Where(s => s.Fakulte_No == dersler.Fakulte_No).ToList(),
                 Dersler = db.Dersler.Where(s => s.Bolum_Id == dersler.Bolum_Id).Where(s => s.Fakulte_No == dersler.Fakulte_No).ToList(),
-                Kullanici = db.Kullanici.Where(s => s.Rol_Id == 2).ToList(),
+                Kullanici = db.Kullanici.Where(s => s.Rol_Id == "2").ToList(),
                 Siniflar = db.Siniflar.ToList(),
             };
             return View("Ekle", model);
@@ -46,7 +46,7 @@ namespace Proje.Controllers
                 Fakulte = db.Fakulte.ToList(),
                 Bolum = db.Bolum.Where(s => s.Fakulte_No == dersler.Fakulte_No).ToList(),
                 Dersler = db.Dersler.Where(s => s.Bolum_Id == dersler.Bolum_Id).Where(s => s.Fakulte_No == dersler.Fakulte_No).ToList(),
-                Kullanici = db.Kullanici.Where(s => s.Rol_Id == 2).ToList(),
+                Kullanici = db.Kullanici.Where(s => s.Rol_Id == "2").ToList(),
                 Siniflar = db.Siniflar.ToList(),
             };
             if (checkDersKodu == null)
@@ -80,7 +80,7 @@ namespace Proje.Controllers
             dersAtamaDetailViewModel.Fakulte = db.Fakulte.ToList();
             dersAtamaDetailViewModel.Bolum = db.Bolum.ToList();
             dersAtamaDetailViewModel.Dersler = db.Dersler.ToList();
-            dersAtamaDetailViewModel.Kullanici = db.Kullanici.Where(s => s.Rol_Id == 2).ToList();
+            dersAtamaDetailViewModel.Kullanici = db.Kullanici.Where(s => s.Rol_Id == "2").ToList();
             dersAtamaDetailViewModel.Siniflar = db.Siniflar.ToList();
             dersAtamaDetailViewModel.Donem = db.Donem.ToList();
             return View("Guncelle", dersAtamaDetailViewModel);

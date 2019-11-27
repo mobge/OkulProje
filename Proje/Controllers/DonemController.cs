@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Proje.Controllers
 {
+    [Authorize(Roles = "1")]
     public class DonemController : Controller
     {
         okulEntities db = new okulEntities();
@@ -75,8 +76,19 @@ namespace Proje.Controllers
             var silinecekDonem = db.Donem.Find(id);
             if (silinecekDonem == null)
                 return HttpNotFound();
-            db.Donem.Remove(silinecekDonem);
-            db.SaveChanges();
+            Acilan_Dersler silinecekAtamaDonem = db.Acilan_Dersler.Where(s => s.Donem_Id == id).FirstOrDefault();
+            if (silinecekDonem != null && silinecekAtamaDonem != null)
+            {
+                db.Acilan_Dersler.Remove(silinecekAtamaDonem);
+                db.Donem.Remove(silinecekDonem);
+                db.SaveChanges();
+            }
+            else if (silinecekDonem != null && silinecekAtamaDonem == null)
+            {
+                db.Donem.Remove(silinecekDonem);
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Index");
         }
     }

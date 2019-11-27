@@ -18,8 +18,8 @@ namespace Proje.Models
         public Dersler()
         {
             this.Ders_Kazanim = new HashSet<Ders_Kazanim>();
-            this.Acilan_Dersler = new HashSet<Acilan_Dersler>();
             this.Sinav_Sonuclari = new HashSet<Sinav_Sonuclari>();
+            this.Acilan_Dersler = new HashSet<Acilan_Dersler>();
         }
     
         public string Ders_Kodu { get; set; }
@@ -32,8 +32,8 @@ namespace Proje.Models
         public virtual Bolum Bolum { get; set; }
         public virtual Fakulte Fakulte { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Acilan_Dersler> Acilan_Dersler { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sinav_Sonuclari> Sinav_Sonuclari { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Acilan_Dersler> Acilan_Dersler { get; set; }
     }
 }

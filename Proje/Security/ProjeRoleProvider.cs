@@ -40,9 +40,11 @@ namespace Proje.Security
             throw new NotImplementedException();
         }
 
-        public override string[] GetRolesForUser(string sicilNo)
+        public override string[] GetRolesForUser(string username)
         {
-            throw new NotImplementedException();
+            okulEntities db = new okulEntities();
+            var kullanici = db.Kullanici.FirstOrDefault(x => x.Ad == username);
+            return new string[] { kullanici.Rol_Id };
         }
 
         public override string[] GetUsersInRole(string roleName)

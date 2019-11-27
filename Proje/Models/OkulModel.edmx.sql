@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/27/2019 01:21:36
+-- Date Created: 11/27/2019 11:30:54
 -- Generated from EDMX file: C:\Users\Atakan\source\repos\Proje\Proje\Models\OkulModel.edmx
 -- --------------------------------------------------
 
@@ -52,9 +52,6 @@ IF OBJECT_ID(N'[dbo].[FK_Dersler_Fakulte]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_Sinav_Sonuclari_Bolum]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Sinav_Sonuclari] DROP CONSTRAINT [FK_Sinav_Sonuclari_Bolum];
-GO
-IF OBJECT_ID(N'[dbo].[FK_Sinav_Sonuclari_Dersler]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Sinav_Sonuclari] DROP CONSTRAINT [FK_Sinav_Sonuclari_Dersler];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Sinav_Sonuclari_Donem]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Sinav_Sonuclari] DROP CONSTRAINT [FK_Sinav_Sonuclari_Donem];
@@ -197,45 +194,6 @@ CREATE TABLE [dbo].[Siniflar] (
 );
 GO
 
--- Creating table 'sysdiagrams'
-CREATE TABLE [dbo].[sysdiagrams] (
-    [name] nvarchar(128)  NOT NULL,
-    [principal_id] int  NOT NULL,
-    [diagram_id] int IDENTITY(1,1) NOT NULL,
-    [version] int  NULL,
-    [definition] varbinary(max)  NULL
-);
-GO
-
--- Creating table 'Kullanici'
-CREATE TABLE [dbo].[Kullanici] (
-    [Sicil_No] nvarchar(50)  NOT NULL,
-    [Ad] nvarchar(50)  NOT NULL,
-    [Soyad] nvarchar(50)  NOT NULL,
-    [Sifre] nvarchar(50)  NOT NULL,
-    [Rol_Id] int  NOT NULL
-);
-GO
-
--- Creating table 'Roller'
-CREATE TABLE [dbo].[Roller] (
-    [Rol_Id] int IDENTITY(1,1) NOT NULL,
-    [Rol_Adi] nvarchar(50)  NOT NULL
-);
-GO
-
--- Creating table 'Acilan_Dersler'
-CREATE TABLE [dbo].[Acilan_Dersler] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Donem_Id] int  NOT NULL,
-    [Fakulte_No] nvarchar(50)  NOT NULL,
-    [Bolum_Id] int  NOT NULL,
-    [Ders_Kodu] nvarchar(50)  NOT NULL,
-    [Sicil_No] nvarchar(50)  NOT NULL,
-    [Sinif] int  NOT NULL
-);
-GO
-
 -- Creating table 'Sinav_Sonuclari'
 CREATE TABLE [dbo].[Sinav_Sonuclari] (
     [Id] int IDENTITY(1,1) NOT NULL,
@@ -246,6 +204,35 @@ CREATE TABLE [dbo].[Sinav_Sonuclari] (
     [Sicil_No] nvarchar(50)  NULL,
     [Sonuc] nvarchar(1000)  NULL,
     [Sinav_Turu_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'Acilan_Dersler'
+CREATE TABLE [dbo].[Acilan_Dersler] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Donem_Id] int  NOT NULL,
+    [Fakulte_No] nvarchar(50)  NOT NULL,
+    [Bolum_Id] int  NOT NULL,
+    [Ders_Kodu] nvarchar(50)  NOT NULL,
+    [Sinif] int  NOT NULL,
+    [Sicil_No] nvarchar(50)  NOT NULL
+);
+GO
+
+-- Creating table 'Kullanici'
+CREATE TABLE [dbo].[Kullanici] (
+    [Sicil_No] nvarchar(50)  NOT NULL,
+    [Ad] nvarchar(50)  NOT NULL,
+    [Soyad] nvarchar(50)  NOT NULL,
+    [Sifre] nvarchar(50)  NOT NULL,
+    [Rol_Id] nvarchar(50)  NOT NULL
+);
+GO
+
+-- Creating table 'Roller'
+CREATE TABLE [dbo].[Roller] (
+    [Rol_Id] nvarchar(50)  NOT NULL,
+    [Rol_Adi] nvarchar(50)  NOT NULL
 );
 GO
 
@@ -313,10 +300,16 @@ ADD CONSTRAINT [PK_Siniflar]
     PRIMARY KEY CLUSTERED ([Sinif_Id] ASC);
 GO
 
--- Creating primary key on [diagram_id] in table 'sysdiagrams'
-ALTER TABLE [dbo].[sysdiagrams]
-ADD CONSTRAINT [PK_sysdiagrams]
-    PRIMARY KEY CLUSTERED ([diagram_id] ASC);
+-- Creating primary key on [Id] in table 'Sinav_Sonuclari'
+ALTER TABLE [dbo].[Sinav_Sonuclari]
+ADD CONSTRAINT [PK_Sinav_Sonuclari]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Acilan_Dersler'
+ALTER TABLE [dbo].[Acilan_Dersler]
+ADD CONSTRAINT [PK_Acilan_Dersler]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
 -- Creating primary key on [Sicil_No] in table 'Kullanici'
@@ -329,18 +322,6 @@ GO
 ALTER TABLE [dbo].[Roller]
 ADD CONSTRAINT [PK_Roller]
     PRIMARY KEY CLUSTERED ([Rol_Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Acilan_Dersler'
-ALTER TABLE [dbo].[Acilan_Dersler]
-ADD CONSTRAINT [PK_Acilan_Dersler]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Sinav_Sonuclari'
-ALTER TABLE [dbo].[Sinav_Sonuclari]
-ADD CONSTRAINT [PK_Sinav_Sonuclari]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -420,6 +401,81 @@ GO
 CREATE INDEX [IX_FK_Dersler_Fakulte]
 ON [dbo].[Dersler]
     ([Fakulte_No]);
+GO
+
+-- Creating foreign key on [Bolum_ıd] in table 'Sinav_Sonuclari'
+ALTER TABLE [dbo].[Sinav_Sonuclari]
+ADD CONSTRAINT [FK_Sinav_Sonuclari_Bolum]
+    FOREIGN KEY ([Bolum_ıd])
+    REFERENCES [dbo].[Bolum]
+        ([Bolum_Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Sinav_Sonuclari_Bolum'
+CREATE INDEX [IX_FK_Sinav_Sonuclari_Bolum]
+ON [dbo].[Sinav_Sonuclari]
+    ([Bolum_ıd]);
+GO
+
+-- Creating foreign key on [Ders_Kodu] in table 'Sinav_Sonuclari'
+ALTER TABLE [dbo].[Sinav_Sonuclari]
+ADD CONSTRAINT [FK_Sinav_Sonuclari_Dersler]
+    FOREIGN KEY ([Ders_Kodu])
+    REFERENCES [dbo].[Dersler]
+        ([Ders_Kodu])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Sinav_Sonuclari_Dersler'
+CREATE INDEX [IX_FK_Sinav_Sonuclari_Dersler]
+ON [dbo].[Sinav_Sonuclari]
+    ([Ders_Kodu]);
+GO
+
+-- Creating foreign key on [Donem_Id] in table 'Sinav_Sonuclari'
+ALTER TABLE [dbo].[Sinav_Sonuclari]
+ADD CONSTRAINT [FK_Sinav_Sonuclari_Donem]
+    FOREIGN KEY ([Donem_Id])
+    REFERENCES [dbo].[Donem]
+        ([Donem_Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Sinav_Sonuclari_Donem'
+CREATE INDEX [IX_FK_Sinav_Sonuclari_Donem]
+ON [dbo].[Sinav_Sonuclari]
+    ([Donem_Id]);
+GO
+
+-- Creating foreign key on [Fakulte_No] in table 'Sinav_Sonuclari'
+ALTER TABLE [dbo].[Sinav_Sonuclari]
+ADD CONSTRAINT [FK_Sinav_Sonuclari_Fakulte]
+    FOREIGN KEY ([Fakulte_No])
+    REFERENCES [dbo].[Fakulte]
+        ([Fakulte_No])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Sinav_Sonuclari_Fakulte'
+CREATE INDEX [IX_FK_Sinav_Sonuclari_Fakulte]
+ON [dbo].[Sinav_Sonuclari]
+    ([Fakulte_No]);
+GO
+
+-- Creating foreign key on [Sinav_Turu_Id] in table 'Sinav_Sonuclari'
+ALTER TABLE [dbo].[Sinav_Sonuclari]
+ADD CONSTRAINT [FK_Sinav_Sonuclari_Sınav_Turu]
+    FOREIGN KEY ([Sinav_Turu_Id])
+    REFERENCES [dbo].[Sınav_Turu]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_Sinav_Sonuclari_Sınav_Turu'
+CREATE INDEX [IX_FK_Sinav_Sonuclari_Sınav_Turu]
+ON [dbo].[Sinav_Sonuclari]
+    ([Sinav_Turu_Id]);
 GO
 
 -- Creating foreign key on [Bolum_Id] in table 'Acilan_Dersler'
@@ -512,66 +568,6 @@ ON [dbo].[Acilan_Dersler]
     ([Sinif]);
 GO
 
--- Creating foreign key on [Bolum_ıd] in table 'Sinav_Sonuclari'
-ALTER TABLE [dbo].[Sinav_Sonuclari]
-ADD CONSTRAINT [FK_Sinav_Sonuclari_Bolum]
-    FOREIGN KEY ([Bolum_ıd])
-    REFERENCES [dbo].[Bolum]
-        ([Bolum_Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_Sinav_Sonuclari_Bolum'
-CREATE INDEX [IX_FK_Sinav_Sonuclari_Bolum]
-ON [dbo].[Sinav_Sonuclari]
-    ([Bolum_ıd]);
-GO
-
--- Creating foreign key on [Ders_Kodu] in table 'Sinav_Sonuclari'
-ALTER TABLE [dbo].[Sinav_Sonuclari]
-ADD CONSTRAINT [FK_Sinav_Sonuclari_Dersler]
-    FOREIGN KEY ([Ders_Kodu])
-    REFERENCES [dbo].[Dersler]
-        ([Ders_Kodu])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_Sinav_Sonuclari_Dersler'
-CREATE INDEX [IX_FK_Sinav_Sonuclari_Dersler]
-ON [dbo].[Sinav_Sonuclari]
-    ([Ders_Kodu]);
-GO
-
--- Creating foreign key on [Donem_Id] in table 'Sinav_Sonuclari'
-ALTER TABLE [dbo].[Sinav_Sonuclari]
-ADD CONSTRAINT [FK_Sinav_Sonuclari_Donem]
-    FOREIGN KEY ([Donem_Id])
-    REFERENCES [dbo].[Donem]
-        ([Donem_Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_Sinav_Sonuclari_Donem'
-CREATE INDEX [IX_FK_Sinav_Sonuclari_Donem]
-ON [dbo].[Sinav_Sonuclari]
-    ([Donem_Id]);
-GO
-
--- Creating foreign key on [Fakulte_No] in table 'Sinav_Sonuclari'
-ALTER TABLE [dbo].[Sinav_Sonuclari]
-ADD CONSTRAINT [FK_Sinav_Sonuclari_Fakulte]
-    FOREIGN KEY ([Fakulte_No])
-    REFERENCES [dbo].[Fakulte]
-        ([Fakulte_No])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_Sinav_Sonuclari_Fakulte'
-CREATE INDEX [IX_FK_Sinav_Sonuclari_Fakulte]
-ON [dbo].[Sinav_Sonuclari]
-    ([Fakulte_No]);
-GO
-
 -- Creating foreign key on [Sicil_No] in table 'Sinav_Sonuclari'
 ALTER TABLE [dbo].[Sinav_Sonuclari]
 ADD CONSTRAINT [FK_Sinav_Sonuclari_Kullanici]
@@ -585,21 +581,6 @@ GO
 CREATE INDEX [IX_FK_Sinav_Sonuclari_Kullanici]
 ON [dbo].[Sinav_Sonuclari]
     ([Sicil_No]);
-GO
-
--- Creating foreign key on [Sinav_Turu_Id] in table 'Sinav_Sonuclari'
-ALTER TABLE [dbo].[Sinav_Sonuclari]
-ADD CONSTRAINT [FK_Sinav_Sonuclari_Sınav_Turu]
-    FOREIGN KEY ([Sinav_Turu_Id])
-    REFERENCES [dbo].[Sınav_Turu]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_Sinav_Sonuclari_Sınav_Turu'
-CREATE INDEX [IX_FK_Sinav_Sonuclari_Sınav_Turu]
-ON [dbo].[Sinav_Sonuclari]
-    ([Sinav_Turu_Id]);
 GO
 
 -- --------------------------------------------------

@@ -10,23 +10,29 @@
     <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
+            @if (User.IsInRole("1"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" href="/Kullanici">Öğretim Elemanı</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Fakulte">Fakülte</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Bolum">Bölüm</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Ders">Dersler</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Donem">Dönemler</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/DersAtama">Ders Atama</a>
+                </li>
+            }
             <li class="nav-item">
-                <a class="nav-link" href="/Kullanici">Öğretim Elemanı</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/Fakulte">Fakülte</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/Bolum">Bölüm</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/Ders">Dersler</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/Donem">Dönemler</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/DersAtama">Ders Atama</a>
+                <a class="nav-link" href="/Derslerim">Derslerim</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/SinavOkutma">Sınav Okutma</a>

@@ -25,7 +25,7 @@ namespace Proje.Models
         public string Ad { get; set; }
         public string Soyad { get; set; }
         public string Sifre { get; set; }
-        public int Rol_Id { get; set; }
+        public string Rol_Id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Acilan_Dersler> Acilan_Dersler { get; set; }

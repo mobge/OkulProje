@@ -14,7 +14,8 @@ using _Excel = Microsoft.Office.Interop.Excel;
 using System.Text;
 
 namespace Proje.Controllers
-{ 
+{
+    [Authorize(Roles = "1")]
     public class DersController : Controller
     {
         okulEntities db = new okulEntities();
@@ -106,12 +107,24 @@ namespace Proje.Controllers
         public ActionResult Sil(string id)
         {
             var silinecekDers = db.Dersler.Find(id);
-            Ders_Kazanim silinecekDersKazanim = db.Ders_Kazanim.Where(s => s.Ders_Kodu == id).FirstOrDefault();
+            Acilan_Dersler silinecekAcilanDers = db.Acilan_Dersler.Where(s => s.Ders_Kodu == id).FirstOrDefault();
             if (silinecekDers == null)
                 return HttpNotFound();
-            db.Ders_Kazanim.Remove(silinecekDersKazanim);
-            db.Dersler.Remove(silinecekDers);
-            db.SaveChanges();
+            if (silinecekDers != null && silinecekAcilanDers != null)
+            {
+                Ders_Kazanim silinecekDersKazanim = db.Ders_Kazanim.Where(s => s.Ders_Kodu == id).FirstOrDefault();
+                db.Ders_Kazanim.Remove(silinecekDersKazanim);
+                db.Acilan_Dersler.Remove(silinecekAcilanDers);
+                db.Dersler.Remove(silinecekDers);
+                db.SaveChanges();
+            }
+            else if(silinecekDers!=null && silinecekAcilanDers==null)
+            {
+                Ders_Kazanim silinecekDersKazanim = db.Ders_Kazanim.Where(s => s.Ders_Kodu == id).FirstOrDefault();
+                db.Ders_Kazanim.Remove(silinecekDersKazanim);
+                db.Dersler.Remove(silinecekDers);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
         public ActionResult Kazanim(string id)
