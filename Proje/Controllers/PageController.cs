@@ -9,6 +9,7 @@ using System.Web.Security;
 
 namespace Proje.Controllers
 {
+    [AllowAnonymous]
     public class PageController : Controller
     {
         okulEntities db = new okulEntities();
@@ -23,6 +24,7 @@ namespace Proje.Controllers
             var kullaniciInDb = db.Kullanici.FirstOrDefault(x => x.Sicil_No == kullanici.Sicil_No && x.Sifre == kullanici.Sifre);
             if (kullaniciInDb != null)
             {
+                FormsAuthentication.SetAuthCookie(kullaniciInDb.Ad, false);
                 return RedirectToAction("Index", "Home");
             }
             else

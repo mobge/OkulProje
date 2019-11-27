@@ -114,6 +114,7 @@
       <LastGenOutput>OkulModel.Context.cs</LastGenOutput>
       <DependentUpon>OkulModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Models\OkulModel.edmx.sql" />
     <Content Include="Models\OkulModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>OkulModel.edmx</DependentUpon>
@@ -250,6 +251,7 @@
       <DependentUpon>OkulModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\ProjeRoleProvider.cs" />
     <Compile Include="ViewModels\BolumViewModel.cs" />
     <Compile Include="ViewModels\DersAtamaViewModel.cs" />
     <Compile Include="ViewModels\DersViewModel.cs" />
