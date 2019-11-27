@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proje.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,5 +17,9 @@ namespace Proje.ViewModels
         public string Sonuc { get; set; }
         public int Sinav_Turu_Id { get; set; }
 
+    }
+    public class DerslerimDetailViewModel
+    {
+        public IEnumerable<DerslerimDetail> derslerimDetail { get; set; }
     }
 }

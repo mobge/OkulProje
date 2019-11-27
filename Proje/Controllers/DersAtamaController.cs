@@ -102,7 +102,7 @@ namespace Proje.Controllers
                 guncellenecekDersAtama.Bolum_Id = dersAtamaDetail.UpdatedDersAtama.Bolum_Id;
                 guncellenecekDersAtama.Ders_Kodu = dersAtamaDetail.UpdatedDersAtama.Ders_Kodu;
                 guncellenecekDersAtama.Sicil_No = dersAtamaDetail.UpdatedDersAtama.Sicil_No;
-                guncellenecekDersAtama.Sinif = dersAtamaDetail.UpdatedDersAtama.Sinif;
+                guncellenecekDersAtama.Sinif = dersAtamaDetail.UpdatedDersAtama.Sinif_No;
                 db.SaveChanges();
                 return View("Guncelle");
             }

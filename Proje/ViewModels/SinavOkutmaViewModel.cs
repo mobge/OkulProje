@@ -15,6 +15,8 @@ namespace Proje.ViewModels
         public int Donem_Id { get; set; }
         public string Sicil_No { get; set; }
         public string Sonuc { get; set; }
+        public string yol2 { get; set; }
+        public string yol { get; set; }
         public int Sinav_Turu_Id { get; set; }
         public IEnumerable<Donem> Donem { get; set; }
         public IEnumerable<Fakulte> Fakulte { get; set; }

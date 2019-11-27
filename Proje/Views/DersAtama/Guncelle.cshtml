@@ -8,32 +8,32 @@
 {
     <div class="form-group" style="height:100% !important;">
         <label>Dönem Seçiniz:</label>
-        @Html.DropDownListFor(m => m.UpdatedDersAtama.Donem_Id, new SelectList(Model.Donem, "Donem_Id", "Donem_Adi", Model.UpdatedDersAtama.Donem_Id), (Model.Donem != null ? Model.UpdatedDersAtama.Donem_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%" })
+        @Html.DropDownListFor(m => m.UpdatedDersAtama.Donem_Id, new SelectList(Model.Donem, "Donem_Id", "Donem_Adi", Model.UpdatedDersAtama.Donem_Id), (Model.Donem != null ? Model.UpdatedDersAtama.Donem_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%", required = "required" })
         @Html.ValidationMessageFor(m => m.UpdatedDersAtama.Donem_Id, "", new { @class = "text-danger" })
     </div>
     <div class="form-group" style="height:100% !important;">
         <label>Fakülte Seçiniz:</label>
-        @Html.DropDownListFor(m => m.UpdatedDersAtama.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.UpdatedDersAtama.Fakulte_No), (Model.Fakulte != null ? Model.UpdatedDersAtama.Fakulte_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%", onchange = "this.form.submit()" })
+        @Html.DropDownListFor(m => m.UpdatedDersAtama.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.UpdatedDersAtama.Fakulte_No), (Model.Fakulte != null ? Model.UpdatedDersAtama.Fakulte_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%", onchange = "this.form.submit()", required = "required" })
         @Html.ValidationMessageFor(m => m.UpdatedDersAtama.Fakulte_No, "", new { @class = "text-danger" })
     </div>
     <div class="form-group" style="height:100% !important;">
         <label>Bölüm Seçiniz:</label>
-        @Html.DropDownListFor(m => m.UpdatedDersAtama.Bolum_Id, new SelectList(Model.Bolum, "Bolum_Id", "Bolum_Adi", Model.UpdatedDersAtama.Bolum_Id), (Model.Bolum != null ? Model.UpdatedDersAtama.Bolum_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%", onchange = "this.form.submit()" })
+        @Html.DropDownListFor(m => m.UpdatedDersAtama.Bolum_Id, new SelectList(Model.Bolum, "Bolum_Id", "Bolum_Adi", Model.UpdatedDersAtama.Bolum_Id), (Model.Bolum != null ? Model.UpdatedDersAtama.Bolum_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%", onchange = "this.form.submit()", required = "required" })
         @Html.ValidationMessageFor(m => m.UpdatedDersAtama.Bolum_Id, "", new { @class = "text-danger" })
     </div>
     <div class="form-group" style="height:100% !important;">
         <label>Ders Seçiniz:</label>
-        @Html.DropDownListFor(m => m.UpdatedDersAtama.Ders_Kodu, new SelectList(Model.Dersler, "Ders_Kodu", "Ders_Adi", Model.UpdatedDersAtama.Ders_Kodu), (Model.Dersler != null ? Model.UpdatedDersAtama.Ders_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%", })
+        @Html.DropDownListFor(m => m.UpdatedDersAtama.Ders_Kodu, new SelectList(Model.Dersler, "Ders_Kodu", "Ders_Adi", Model.UpdatedDersAtama.Ders_Kodu), (Model.Dersler != null ? Model.UpdatedDersAtama.Ders_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%", required = "required" })
         @Html.ValidationMessageFor(m => m.UpdatedDersAtama.Ders_Kodu, "", new { @class = "text-danger" })
     </div>
     <div class="form-group" style="height:100% !important;">
         <label>Öğretim Görevlisi Seçiniz:</label>
-        @Html.DropDownListFor(m =>m.UpdatedDersAtama.Sicil_No, new SelectList(Model.Kullanici, "Sicil_No", "Ad", Model.UpdatedDersAtama.Sicil_No), (Model.Kullanici != null ? Model.UpdatedDersAtama.KullaniciAd : "Seçiniz"), new { @class = "form-control", style = "height:100%" })
+        @Html.DropDownListFor(m =>m.UpdatedDersAtama.Sicil_No, new SelectList(Model.Kullanici, "Sicil_No", "Ad", Model.UpdatedDersAtama.Sicil_No), (Model.Kullanici != null ? Model.UpdatedDersAtama.KullaniciAd : "Seçiniz"), new { @class = "form-control", style = "height:100%", required = "required" })
         @Html.ValidationMessageFor(m => m.UpdatedDersAtama.Sicil_No, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         <label>Sınıf Seçiniz:</label>
-        @Html.DropDownListFor(m => m.UpdatedDersAtama.Sicil_No, new SelectList(Model.Siniflar, "Sinif_Id", "Sinif_No", Model.UpdatedDersAtama.Sinif_No), (Model.Siniflar != null ? Model.UpdatedDersAtama.Sinif_No.ToString() : "Seçiniz"), new { @class = "form-control", style = "height:100%" })
+        @Html.DropDownListFor(m => m.UpdatedDersAtama.Sinif_No, new SelectList(Model.Siniflar, "Sinif_Id", "Sinif_No", Model.UpdatedDersAtama.Sinif_No), (Model.Siniflar != null ? Model.UpdatedDersAtama.Sinif_No.ToString() : "Seçiniz"), new { @class = "form-control", style = "height:100%", required = "required" })
         @Html.ValidationMessageFor(m => m.UpdatedDersAtama.Sinif_No, "", new { @class = "text-danger" })
     </div>
     <button type="submit" class="btn btn-primary">Kaydet</button>

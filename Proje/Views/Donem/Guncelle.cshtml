@@ -8,8 +8,8 @@
 @using (Html.BeginForm("Guncelle", "Donem", FormMethod.Post))
 {
     <div class="form-group">
-        @Html.LabelFor(m => m.Donem_Adi)
-        @Html.TextBoxFor(m => m.Donem_Adi, new { @class = "form-control" })
+        <label>Dönem Adı:</label>
+        @Html.TextBoxFor(m => m.Donem_Adi, new { @class = "form-control", required = "required" })
         @Html.ValidationMessageFor(m => m.Donem_Adi, "", new { @class = "text-danger" })
     </div>
     <button type="submit" class="btn btn-primary">Kaydet</button>

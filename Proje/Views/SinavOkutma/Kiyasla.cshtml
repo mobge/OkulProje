@@ -1,4 +1,5 @@
 ﻿@using Proje.ViewModels
+@using Proje.Controllers
 @model SinavOkutmaViewModel
 @{
     ViewBag.Title = "Kiyasla";
@@ -13,6 +14,11 @@
     <body>
         <h2>Sınav Bilgileri</h2>
         <button type="submit" class="btn btn-primary">Excel Aktar</button>
+
+        <!-- HiddenFor lar yol göndermek için -->
+        @Html.HiddenFor(m => m.yol, new { @class = "form-control" })
+        @Html.HiddenFor(m => m.yol2, new { @class = "form-control" })
+
         <table class="table table-bordered">
             <thead>
             <th></th>

@@ -9,27 +9,27 @@
 {
     <div class="form-group" style="height:100% !important;">
         <label>Fakülte Seçiniz:</label>
-        @Html.DropDownListFor(m => m.UpdatedDers.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.UpdatedDers.Fakulte_No), (Model.Fakulte != null ? Model.UpdatedDers.Fakulte_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%" })
+        @Html.DropDownListFor(m => m.UpdatedDers.Fakulte_No, new SelectList(Model.Fakulte, "Fakulte_No", "Fakulte_Adi", Model.UpdatedDers.Fakulte_No), (Model.Fakulte != null ? Model.UpdatedDers.Fakulte_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%", required = "required" })
         @Html.ValidationMessageFor(m => m.UpdatedDers.Fakulte_No, "", new { @class = "text-danger" })
     </div>
     <div class="form-group" style="height:100% !important;">
         <label>Bölüm Seçiniz:</label>
-        @Html.DropDownListFor(m => m.UpdatedDers.Bolum_Id, new SelectList(Model.Bolum, "Bolum_Id", "Bolum_Adi", Model.UpdatedDers.Bolum_Id), (Model.Bolum != null ? Model.UpdatedDers.Bolum_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%" })
+        @Html.DropDownListFor(m => m.UpdatedDers.Bolum_Id, new SelectList(Model.Bolum, "Bolum_Id", "Bolum_Adi", Model.UpdatedDers.Bolum_Id), (Model.Bolum != null ? Model.UpdatedDers.Bolum_Adi : "Seçiniz"), new { @class = "form-control", style = "height:100%", required = "required" })
         @Html.ValidationMessageFor(m => m.UpdatedDers.Bolum_Id, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.UpdatedDers.Ders_Kodu)
-        @Html.TextBoxFor(m => m.UpdatedDers.Ders_Kodu, new { @class = "form-control" })
+        <label>Ders Kodu:</label>
+        @Html.TextBoxFor(m => m.UpdatedDers.Ders_Kodu, new { @class = "form-control", @readonly="readonly" })
         @Html.ValidationMessageFor(m => m.UpdatedDers.Ders_Kodu, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.UpdatedDers.Ders_Adi)
-        @Html.TextBoxFor(m => m.UpdatedDers.Ders_Adi, new { @class = "form-control" })
+        <label>Ders Adı:</label>
+        @Html.TextBoxFor(m => m.UpdatedDers.Ders_Adi, new { @class = "form-control", required = "required" })
         @Html.ValidationMessageFor(m => m.UpdatedDers.Ders_Adi, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
-        <label>Ders Kazanımları </label>
-        @Html.TextAreaFor(m => m.UpdatedDers.Ders_Ogrenme, new { @class = "form-control" })
+        <label>Ders Kazanımları:</label>
+        @Html.TextAreaFor(m => m.UpdatedDers.Ders_Ogrenme, new { @class = "form-control", required = "required" })
         @Html.ValidationMessageFor(m => m.UpdatedDers.Ders_Ogrenme, "", new { @class = "text-danger" })
     </div>
     <button type="submit" class="btn btn-primary">Kaydet</button>

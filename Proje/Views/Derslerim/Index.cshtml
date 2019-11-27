@@ -1,33 +1,28 @@
 ﻿@using Proje.ViewModels
-@model DerslerimViewModel
+@model DerslerimDetailViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<a class="btn btn-success" href="/Kullanici/Yeni">Öğretim Elemanı Ekle</a>
-<h2>Öğretim Elemanı Listesi</h2>
+<h2>Derslerim</h2>
 <table class="table table-bordered">
     <thead>
-    <th>Sicil Numarası</th>
-    <th>Ad</th>
-    <th>Soyad</th>
-    <th>Şifre</th>
-    <th>Rolü</th>
-    <th>Güncelle</th>
-    <th>Sil</th>
+    <th>Fakülte</th>
+    <th>Bölüm</th>
+    <th>Dönem</th>
+    <th>Ders</th>
+    <th>Sınav Türü</th>
     </thead>
     <tbody>
-        @foreach (var kullanici in Model.KullaniciList)
+        @foreach (var derslerim in Model.derslerimDetail)
         {
-            <tr>
-                <td>@kullanici.Sicil_No</td>
-                <td>@kullanici.Ad</td>
-                <td>@kullanici.Soyad</td>
-                <td>@kullanici.Sifre</td>
-                <td>@kullanici.RolAdi</td>
-                <td><a class="btn btn-primary" href="/Kullanici/Guncelle/@kullanici.Sicil_No">Güncelle</a></td>
-                <td><a class="btn btn-warning" href="/Kullanici/Sil/@kullanici.Sicil_No">Sil</a></td>
-            </tr>
+        <tr>
+            <td>@derslerim.Fakulte_Adi</td>
+            <td>@derslerim.Bolum_Adi</td>
+            <td>@derslerim.Donem_Adi</td>
+            <td>@derslerim.Ders_Adi</td>
+            <td><a href="/Derslerim/OpenExcel/@derslerim.Id">@derslerim.Sinav_Turu_Adi</a></td>
+        </tr>
         }
     </tbody>
 </table>

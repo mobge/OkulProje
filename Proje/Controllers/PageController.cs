@@ -25,6 +25,7 @@ namespace Proje.Controllers
             if (kullaniciInDb != null)
             {
                 FormsAuthentication.SetAuthCookie(kullaniciInDb.Ad, false);
+                Session["sicilNo"] = kullanici.Sicil_No;
                 return RedirectToAction("Index", "Home");
             }
             else
