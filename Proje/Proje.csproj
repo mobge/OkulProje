@@ -294,6 +294,8 @@
     <Content Include="Views\SinavOkutma\Index.cshtml" />
     <Content Include="Views\SinavOkutma\Kiyasla.cshtml" />
     <Content Include="Views\Derslerim\Index.cshtml" />
+    <Content Include="Views\Derslerim\DersKazanim.cshtml" />
+    <Content Include="Views\Derslerim\BolumKazanim.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
