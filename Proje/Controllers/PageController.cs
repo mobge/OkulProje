@@ -26,6 +26,8 @@ namespace Proje.Controllers
             {
                 FormsAuthentication.SetAuthCookie(kullaniciInDb.Ad, false);
                 Session["sicilNo"] = kullanici.Sicil_No;
+                Session["ad"] = kullaniciInDb.Ad;
+                Session["soyad"] = kullaniciInDb.Soyad;
                 return RedirectToAction("Index", "Home");
             }
             else

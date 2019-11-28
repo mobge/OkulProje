@@ -11,6 +11,9 @@ namespace Proje.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            var ad = (string)Session["ad"];
+            var soyad = (string)Session["soyad"];
+            ViewBag.Mesaj = ad+" "+soyad+" Hoşgeldiniz, Lütfen Menü ile ilgili işleme gidiniz.";
             return View();
         }
     }
