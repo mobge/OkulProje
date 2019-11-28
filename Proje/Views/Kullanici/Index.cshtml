@@ -6,15 +6,17 @@
 }
 <a class="btn btn-success" href="/Kullanici/Yeni">Öğretim Elemanı Ekle</a>
 <h2>Öğretim Elemanı Listesi</h2>
-<table class="table table-bordered">
+<table class="table table-bordered" id="tblKullanici">
     <thead>
-        <th>Sicil Numarası</th>
-        <th>Ad</th>
-        <th>Soyad</th>
-        <th>Şifre</th>
-        <th>Rolü</th>
-        <th>Güncelle</th>
-        <th>Sil</th>
+        <tr>
+            <th>Sicil Numarası</th>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Şifre</th>
+            <th>Rolü</th>
+            <th>Güncelle</th>
+            <th>Sil</th>
+        </tr>
     </thead>
     <tbody>
         @foreach (var kullanici in Model.KullaniciList)

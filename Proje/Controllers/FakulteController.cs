@@ -38,7 +38,7 @@ namespace Proje.Controllers
             }
             else if (checkFakulte.Fakulte_No == fakulte.Fakulte_No)
             {
-                ViewBag.Mesaj = "Hata, eklemeye çalıştığınız Kişi sistemde mevcut...";
+                ViewBag.Mesaj = "Hata, eklemeye çalıştığınız Fakülte sistemde mevcut...";
             }
             return View("Ekle");
         }
