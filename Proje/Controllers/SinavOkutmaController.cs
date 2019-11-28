@@ -20,12 +20,13 @@ namespace Proje.Controllers
         okulEntities db = new okulEntities();
         public ActionResult Index(SinavOkutmaViewModel sinav)
         {
+            var sicilNo = (string)Session["sicilNo"];
             SinavOkutmaViewModel model = new SinavOkutmaViewModel()
             {
                 Donem = db.Donem.ToList(),
-                Fakulte = db.Fakulte.ToList(),
-                Bolum = db.Bolum.ToList(), //Where(s => s.Fakulte_No == sinav.Fakulte_No).ToList(),
-                Dersler = db.Dersler.ToList(), // Where(s => s.Bolum_Id == sinav.Bolum_ıd).Where(s => s.Fakulte_No == sinav.Fakulte_No).ToList(),
+                Fakulte = db.Acilan_Dersler.Where(s=>s.Sicil_No==sicilNo).Select(s=>s.Fakulte),
+                Bolum = db.Acilan_Dersler.Where(s => s.Sicil_No == sicilNo).Select(s => s.Bolum),
+                Dersler = db.Acilan_Dersler.Where(s => s.Sicil_No == sicilNo).Select(s => s.Dersler),
                 SinavTuru = db.Sınav_Turu.ToList(),
             };
             return View(model);
@@ -33,16 +34,16 @@ namespace Proje.Controllers
         [HttpPost]
         public ActionResult SinavOkut(SinavOkutmaViewModel sinav, HttpPostedFileBase cevapanahtari, HttpPostedFileBase sinavsonuclari)
         {
+            var sicilNo = (string)Session["sicilNo"];
             SinavOkutmaViewModel model = new SinavOkutmaViewModel()
             {
                 Donem = db.Donem.ToList(),
-                Fakulte = db.Fakulte.ToList(),
-                Bolum = db.Bolum.ToList(), //Where(s => s.Fakulte_No == sinav.Fakulte_No).ToList(),
-                Dersler = db.Dersler.ToList(), // Where(s => s.Bolum_Id == sinav.Bolum_ıd).Where(s => s.Fakulte_No == sinav.Fakulte_No).ToList(),
+                Fakulte = db.Acilan_Dersler.Where(s => s.Sicil_No == sicilNo).Select(s => s.Fakulte),
+                Bolum = db.Acilan_Dersler.Where(s => s.Sicil_No == sicilNo).Select(s => s.Bolum),
+                Dersler = db.Acilan_Dersler.Where(s => s.Sicil_No == sicilNo).Select(s => s.Dersler),
                 SinavTuru = db.Sınav_Turu.ToList(),
             };
             string kazanima = db.Ders_Kazanim.Where(s => s.Ders_Kodu == sinav.Ders_Kodu).Select(s => s.Ders_Ogrenme).FirstOrDefault();
-            var sicilNo = (string)Session["sicilNo"];
             var FileName = Path.GetFileName(cevapanahtari.FileName);
             path = Path.Combine(Server.MapPath("~/cevapanahtari"), FileName);
             model.yol2 = path;
@@ -798,7 +799,7 @@ namespace Proje.Controllers
             ws6.Columns.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter; //ortala
             wb.Save();
             wb.Close();
-            return RedirectToAction("SinavOkut");
+            return RedirectToAction("Index","Derslerim");
         }
     }
 }
