@@ -41,5 +41,14 @@ namespace Proje.Controllers
             var model = db.Ders_Kazanim.Where(s => s.Ders_Kodu == id).ToList();
             return View("DersKazanim", model);
         }
+        public ActionResult Sil(int id)
+        {
+            var silinecekSonuc = db.Sinav_Sonuclari.Find(id);
+            if (silinecekSonuc == null)
+                return HttpNotFound();
+            db.Sinav_Sonuclari.Remove(silinecekSonuc);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }

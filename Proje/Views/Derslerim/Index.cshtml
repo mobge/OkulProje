@@ -12,17 +12,19 @@
     <th>Dönem</th>
     <th>Ders</th>
     <th>Sınav Türü</th>
+    <th>Sil</th>
     </thead>
     <tbody>
         @foreach (var derslerim in Model.derslerimDetail)
         {
-        <tr>
-            <td>@derslerim.Fakulte_Adi</td>
-            <td><a href="/Derslerim/BolumKazanim/@derslerim.Bolum_ıd">@derslerim.Bolum_Adi</a></td>
-            <td>@derslerim.Donem_Adi</td>
-            <td><a href="/Derslerim/DersKazanim/@derslerim.Ders_Kodu">@derslerim.Ders_Adi</a></td>
-            <td><a href="/Derslerim/OpenExcel/@derslerim.Id">@derslerim.Sinav_Turu_Adi</a></td>
-        </tr>
+            <tr>
+                <td>@derslerim.Fakulte_Adi</td>
+                <td><a href="/Derslerim/BolumKazanim/@derslerim.Bolum_ıd">@derslerim.Bolum_Adi</a></td>
+                <td>@derslerim.Donem_Adi</td>
+                <td><a href="/Derslerim/DersKazanim/@derslerim.Ders_Kodu">@derslerim.Ders_Adi</a></td>
+                <td><a href="/Derslerim/OpenExcel/@derslerim.Id">@derslerim.Sinav_Turu_Adi</a></td>
+                <td><a class="btn btn-warning" href="/Derslerim/Sil/@derslerim.Id">Sil</a></td>
+            </tr>
         }
     </tbody>
 </table>

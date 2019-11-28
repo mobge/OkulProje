@@ -533,6 +533,7 @@
     <Content Include="Views\Derslerim\Index.cshtml" />
     <Content Include="Views\Derslerim\DersKazanim.cshtml" />
     <Content Include="Views\Derslerim\BolumKazanim.cshtml" />
+    <Content Include="Views\SinavOkutma\Hata.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

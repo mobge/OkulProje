@@ -491,8 +491,7 @@ namespace Proje.Controllers
                 }
                 else
                 {
-                    ViewBag.Mesaj = "Bu sınav sistemde mevcut...";
-                    return RedirectToAction("Index");
+                    return View("Hata");
                 }
                 return View("Kiyasla", model);
             }
