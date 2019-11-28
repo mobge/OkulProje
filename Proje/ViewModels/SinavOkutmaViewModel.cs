@@ -31,5 +31,8 @@ namespace Proje.ViewModels
         public string[] ogrCevap { get; set; }
         public string[] ogrPuan { get; set; }
         public bool[] IsSelected { get; set; }
+        public bool[] IsSelectedB { get; set; }
+        public bool[] IsSelectedC { get; set; }
+        public string[] kazanimlar { get; set; }
     }
 }

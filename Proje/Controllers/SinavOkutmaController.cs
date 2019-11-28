@@ -20,7 +20,6 @@ namespace Proje.Controllers
         okulEntities db = new okulEntities();
         public ActionResult Index(SinavOkutmaViewModel sinav)
         {
-            var sicilNo = (string)Session["sicilNo"];
             SinavOkutmaViewModel model = new SinavOkutmaViewModel()
             {
                 Donem = db.Donem.ToList(),
@@ -42,8 +41,8 @@ namespace Proje.Controllers
                 Dersler = db.Dersler.ToList(), // Where(s => s.Bolum_Id == sinav.Bolum_ıd).Where(s => s.Fakulte_No == sinav.Fakulte_No).ToList(),
                 SinavTuru = db.Sınav_Turu.ToList(),
             };
+            string kazanima = db.Ders_Kazanim.Where(s => s.Ders_Kodu == sinav.Ders_Kodu).Select(s => s.Ders_Ogrenme).FirstOrDefault();
             var sicilNo = (string)Session["sicilNo"];
-            string kazanim = db.Ders_Kazanim.Where(s => s.Ders_Kodu == sinav.Ders_Kodu).Select(s => s.Ders_Ogrenme).FirstOrDefault();
             var FileName = Path.GetFileName(cevapanahtari.FileName);
             path = Path.Combine(Server.MapPath("~/cevapanahtari"), FileName);
             model.yol2 = path;
@@ -51,11 +50,12 @@ namespace Proje.Controllers
             FileName = Path.GetFileName(sinavsonuclari.FileName);
             path1 = Path.Combine(Server.MapPath("~/sinavsonuclari"), FileName);
             sinavsonuclari.SaveAs(path1);
+
+
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Index");
             }
-
             else
             {
                 //Excel ve Text dosyalarının yolu
@@ -333,6 +333,49 @@ namespace Proje.Controllers
                     model.ogrPuan[i] = puan2[i];
                 }
 
+
+
+                //Kazanım okuma ve ayırma 
+                char[] kazanim = kazanima.ToCharArray();
+                int kazanimSayac = 0;
+                for (int i = 0; i < kazanim.Length; i++)
+                {
+
+                    if (i + 4 < kazanim.Length)
+                    {
+                        if (kazanim[i] == '\r' && kazanim[i + 1] == '\n')
+                        {
+                            kazanimSayac++;
+                        }
+                    }
+                }
+                if (kazanimSayac != 0)
+                {
+
+                    string[] kazanimlar = new string[kazanimSayac];
+                    int kazanimsayac2 = 0;
+                    int kazanimDiziSayac = 0;
+                    kazanimSayac = 0;
+                    model.kazanimlar = new string[kazanimlar.Length];
+                    for (int i = 0; i < kazanim.Length; i++)
+                    {
+                        kazanimsayac2++;
+                        if (kazanim[i] == '\r' && kazanim[i + 1] == '\n')
+                        {
+                            kazanimlar[kazanimDiziSayac] = new string(kazanim, kazanimSayac, kazanimsayac2 - 2);
+                            model.kazanimlar[kazanimDiziSayac] = kazanimlar[kazanimDiziSayac];
+                            kazanimDiziSayac++;
+                            kazanimsayac2 = 0;
+                            kazanimSayac = i + 2;
+                        }
+                    }
+
+                }
+
+
+
+
+
                 //Eski kod
                 //sonuç karşılaştırma 
                 /* int puan = 0;
@@ -399,12 +442,15 @@ namespace Proje.Controllers
             string excelXlsx = model.yol;
             _Application excel = new _Excel.Application();
             Workbook wb;
-            Worksheet ws, ws2, ws3, ws4;
+            Worksheet ws, ws2, ws3, ws4, ws5, ws6;
             wb = excel.Workbooks.Open(excelXlsx);
             ws = wb.Worksheets[1];
             ws2 = wb.Worksheets[2];
             ws3 = wb.Worksheets[3];
             ws4 = wb.Worksheets[4];
+            ws5 = wb.Worksheets[5];
+            ws6 = wb.Worksheets[6];
+
 
             //cevapları tekrar kıyasla ve excele kaydet
             string[] cevapListe = System.IO.File.ReadAllLines(yol);
@@ -417,9 +463,11 @@ namespace Proje.Controllers
             double[] soruB = new double[30];
             double[] soruC = new double[30];
             int[] grupSayac = new int[3];
-            string[,] kazanimA = new string[30, 6];
+            string[,] kazanimA = new string[30, model.kazanimlar.Length + 1];
+            string[,] kazanimB = new string[30, model.kazanimlar.Length + 1];
+            string[,] kazanimC = new string[30, model.kazanimlar.Length + 1];
             int[] kazanimAP = new int[5];
-            int[] kazanimTamAP = new int[5];
+            int[] kazanimTamAP = new int[model.kazanimlar.Length];
 
 
             //Grup sayacı
@@ -453,7 +501,7 @@ namespace Proje.Controllers
 
                         if (cevap[cevapSayac] == dogruCevap[cevapSayac + 1])
                         {
-                            kazanimA[cevapSayac, 5] = "D";
+                            kazanimA[cevapSayac, model.kazanimlar.Length] = "D";
                             soruA[cevapSayac] = soruA[cevapSayac] + 1;
                             dogruSayac++;
                             puan = (dogruSayac * 3.33);
@@ -514,7 +562,12 @@ namespace Proje.Controllers
             ws.Cells[model.ad.Length + 2, 33].Value2 = Math.Round((anaPuan / model.ad.Length), 2);
 
             //soru ortalama
-            double ortalamaSayac = 0;
+            double ortalamaSayacA = 0;
+            double ortalamaSayacB = 0;
+            double ortalamaSayacC = 0;
+            double[] soruKazanimA = new double[30];
+            double[] soruKazanimB = new double[30];
+            double[] soruKazanimC = new double[30];
             for (int i = 0; i < 30; i++)
             {
                 for (int listeSayac = 0; listeSayac < model.ad.Length; listeSayac++)
@@ -526,18 +579,24 @@ namespace Proje.Controllers
                     gruplar[2] = dogruCevap2[0];
                     gruplar[3] = dogruCevap3[0];
 
-                    if (gruplar[0] == gruplar[1]) { if (cevap[i] == dogruCevap[i + 1]) { ortalamaSayac++; } }
-                    if (gruplar[0] == gruplar[2]) { if (cevap[i] == dogruCevap2[i + 1]) { ortalamaSayac++; } }
-                    if (gruplar[0] == gruplar[3]) { if (cevap[i] == dogruCevap3[i + 1]) { ortalamaSayac++; } }
+                    if (gruplar[0] == gruplar[1]) { if (cevap[i] == dogruCevap[i + 1]) { ortalamaSayacA++; } }
+                    if (gruplar[0] == gruplar[2]) { if (cevap[i] == dogruCevap2[i + 1]) { ortalamaSayacB++; } }
+                    if (gruplar[0] == gruplar[3]) { if (cevap[i] == dogruCevap3[i + 1]) { ortalamaSayacC++; } }
 
                 }
                 int a = model.ad.Length;
-                ws.Cells[a + 2, i + 3].Value2 = "'" + Math.Round(((ortalamaSayac * 3.33) / model.ad.Length), 2);
-                ortalamaSayac = 0;
+                ws.Cells[a + 2, i + 3].Value2 = "'" + Math.Round((((ortalamaSayacA + ortalamaSayacB + ortalamaSayacC) * 3.33) / model.ad.Length), 2);
+                soruKazanimA[i] = ortalamaSayacA;
+                soruKazanimB[i] = ortalamaSayacB;
+                soruKazanimC[i] = ortalamaSayacC;
+                ortalamaSayacA = 0;
+                ortalamaSayacB = 0;
+                ortalamaSayacC = 0;
             }
             ws.Cells[model.ad.Length + 2, 1].Value2 = "Ortalama";
 
             //Excel Soru Ortalama Tablosu
+            //A Grubu
             ws2.Cells[1, 1].Value2 = "A Grubu";
             ws2.Cells[1, 2].Value2 = "Ortalaması(Puan)";
             ws2.Cells[1, 3].Value2 = "Başarımı (%) {Ort P./Tam P.}x100 ";
@@ -549,11 +608,35 @@ namespace Proje.Controllers
                 ws2.Cells[i + 2, 1].Value2 = "Soru" + (i + 1).ToString();
             }
 
+            //B Grubu
+            ws2.Cells[1, 5].Value2 = "B Grubu";
+            ws2.Cells[1, 6].Value2 = "Ortalaması(Puan)";
+            ws2.Cells[1, 7].Value2 = "Başarımı (%) {Ort P./Tam P.}x100 ";
+            for (int i = 0; i < 30; i++)
+            {
+                double deger = (soruB[i] * 3.33) / grupSayac[1];
+                ws2.Cells[i + 2, 6].Value2 = Math.Round(deger, 2);
+                ws2.Cells[i + 2, 7].Value2 = "'" + "%" + (Math.Round((deger * 100) / (3.33), 2));
+                ws2.Cells[i + 2, 5].Value2 = "Soru" + (i + 1).ToString();
+            }
+
+            //A Grubu
+            ws2.Cells[1, 9].Value2 = "C Grubu";
+            ws2.Cells[1, 10].Value2 = "Ortalaması(Puan)";
+            ws2.Cells[1, 11].Value2 = "Başarımı (%) {Ort P./Tam P.}x100 ";
+            for (int i = 0; i < 30; i++)
+            {
+                double deger = (soruC[i] * 3.33) / grupSayac[2];
+                ws2.Cells[i + 2, 10].Value2 = Math.Round(deger, 2);
+                ws2.Cells[i + 2, 11].Value2 = "'" + "%" + (Math.Round((deger * 100) / (3.33), 2));
+                ws2.Cells[i + 2, 9].Value2 = "Soru" + (i + 1).ToString();
+            }
+
 
             //Kazanım Tablosu
             int sutunSayac = 0;
             int satirsayac = 2;
-            //A grubu
+            //A B C grubu
             for (int i = 0; i < model.IsSelected.Length; i++)
             {
                 if (model.IsSelected[i] == true)
@@ -562,64 +645,108 @@ namespace Proje.Controllers
                     sutunSayac++;
                     ws4.Cells[satirsayac, sutunSayac + 1].Value2 = "X";
                     kazanimA[satirsayac - 2, sutunSayac - 1] = "X";
-                    if (sutunSayac == 5) { satirsayac++; sutunSayac = 0; }
+                    ws5.Cells[satirsayac, sutunSayac + 1].Value2 = "X";
+                    kazanimB[satirsayac - 2, sutunSayac - 1] = "X";
+                    ws6.Cells[satirsayac, sutunSayac + 1].Value2 = "X";
+                    kazanimC[satirsayac - 2, sutunSayac - 1] = "X";
+                    if (sutunSayac == model.kazanimlar.Length) { satirsayac++; sutunSayac = 0; }
                 }
                 else
                 {
                     sutunSayac++;
-                    if (sutunSayac == 5) { satirsayac++; sutunSayac = 0; }
+                    if (sutunSayac == model.kazanimlar.Length) { satirsayac++; sutunSayac = 0; }
                 }
             }
+
 
 
             //Kazanıma göre ortalama
             //A Grubu
-            for (int i = 0; i < 30; i++)
-            {
-                for (int s = 0; s < 5; s++)
-                {
-                    if (s == 0 && kazanimA[i, s] == "X")
-                    {
-                        kazanimTamAP[0]++;
-                        if (kazanimA[i, 5] == "D") { kazanimAP[0]++; }
-                    }
-                    if (s == 1 && kazanimA[i, s] == "X")
-                    {
-                        kazanimTamAP[1]++;
-                        if (kazanimA[i, 5] == "D") { kazanimAP[1]++; }
-                    }
-                    if (s == 2 && kazanimA[i, s] == "X")
-                    {
-                        kazanimTamAP[2]++;
-                        if (kazanimA[i, 5] == "D") { kazanimAP[2]++; }
-                    }
-                    if (s == 3 && kazanimA[i, s] == "X")
-                    {
-                        kazanimTamAP[3]++;
-                        if (kazanimA[i, 5] == "D") { kazanimAP[3]++; }
-                    }
-                    if (s == 4 && kazanimA[i, s] == "X")
-                    {
-                        kazanimTamAP[4]++;
-                        if (kazanimA[i, 5] == "D") { kazanimAP[4]++; }
-                    }
-                }
-            }
             ws3.Cells[1, 1].Value2 = "A Grubu";
             ws3.Cells[1, 2].Value2 = "Ortalaması(Puan)";
             ws3.Cells[1, 3].Value2 = "Başarımı (%) {Ort P./Kazanım Tam P.}x100 ";
-            for (int i = 0; i < 5; i++)
+            double[] kazanimSayiA = new double[model.kazanimlar.Length];
+            double[] kazanimPuanA = new double[model.kazanimlar.Length];
+            for (int i = 0; i < 30; i++)
             {
-                double deger = (kazanimAP[i] * 3.33) / grupSayac[0];
-                ws3.Cells[i + 2, 2].Value2 = Math.Round(deger, 2);
-                double deger2 = (Math.Round(((deger * 100) / (kazanimTamAP[i] * 3.33)), 2));
-                if (deger == 0)
+                for (int s = 0; s < model.kazanimlar.Length; s++)
                 {
-                    ws3.Cells[i + 2, 3].Value2 = "'" + "%" + 0;
+                    if (kazanimA[i, s] == "X")
+                    {
+                        kazanimSayiA[s]++;
+                        kazanimPuanA[s] = kazanimPuanA[s] + ((soruKazanimA[i] * 3.33) / grupSayac[0]);
+                    }
                 }
-                else { ws3.Cells[i + 2, 3].Value2 = "'" + "%" + deger2; }
-                ws3.Cells[i + 2, 1].Value2 = "Kazanım" + (i + 1).ToString();
             }
+            for (int i = 0; i < model.kazanimlar.Length; i++)
+            {
+                double deger = Math.Round((kazanimPuanA[i] / kazanimSayiA[i]), 2);
+                ws3.Cells[i + 2, 1].Value2 = model.kazanimlar[i];
+                ws3.Cells[i + 2, 2].Value2 = deger;
+                if (kazanimPuanA[i] != 0)
+                {
+                    ws3.Cells[i + 2, 3].Value2 = "'" + "%" + Math.Round((deger * 100 / 3.33), 2);
+                }
+                else { ws3.Cells[i + 2, 3].Value2 = 0; }
+            }
+            //B Grubu
+            ws3.Cells[1, 5].Value2 = "B Grubu";
+            ws3.Cells[1, 6].Value2 = "Ortalaması(Puan)";
+            ws3.Cells[1, 7].Value2 = "Başarımı (%) {Ort P./Kazanım Tam P.}x100 ";
+            double[] kazanimSayiB = new double[model.kazanimlar.Length];
+            double[] kazanimPuanB = new double[model.kazanimlar.Length];
+            for (int i = 0; i < 30; i++)
+            {
+                for (int s = 0; s < model.kazanimlar.Length; s++)
+                {
+                    if (kazanimB[i, s] == "X")
+                    {
+                        kazanimSayiB[s]++;
+                        kazanimPuanB[s] = kazanimPuanB[s] + ((soruKazanimB[i] * 3.33) / grupSayac[1]);
+                    }
+                }
+            }
+            for (int i = 0; i < model.kazanimlar.Length; i++)
+            {
+                double deger = Math.Round((kazanimPuanB[i] / kazanimSayiB[i]), 2);
+                ws3.Cells[i + 2, 5].Value2 = model.kazanimlar[i];
+                ws3.Cells[i + 2, 6].Value2 = deger;
+                if (kazanimPuanB[i] != 0)
+                {
+                    ws3.Cells[i + 2, 7].Value2 = "'" + "%" + Math.Round((deger * 100 / 3.33), 2);
+                }
+                else { ws3.Cells[i + 2, 7].Value2 = 0; }
+            }
+            //C Grubu
+            ws3.Cells[1, 9].Value2 = "C Grubu";
+            ws3.Cells[1, 10].Value2 = "Ortalaması(Puan)";
+            ws3.Cells[1, 11].Value2 = "Başarımı (%) {Ort P./Kazanım Tam P.}x100 ";
+            double[] kazanimSayiC = new double[model.kazanimlar.Length];
+            double[] kazanimPuanC = new double[model.kazanimlar.Length];
+            for (int i = 0; i < 30; i++)
+            {
+                for (int s = 0; s < model.kazanimlar.Length; s++)
+                {
+                    if (kazanimC[i, s] == "X")
+                    {
+                        kazanimSayiC[s]++;
+                        kazanimPuanC[s] = kazanimPuanC[s] + ((soruKazanimC[i] * 3.33) / grupSayac[2]);
+                    }
+                }
+            }
+            for (int i = 0; i < model.kazanimlar.Length; i++)
+            {
+                double deger = Math.Round((kazanimPuanC[i] / kazanimSayiC[i]), 2);
+                ws3.Cells[i + 2, 9].Value2 = model.kazanimlar[i];
+                ws3.Cells[i + 2, 10].Value2 = deger;
+                if (kazanimPuanC[i] != 0)
+                {
+                    ws3.Cells[i + 2, 11].Value2 = "'" + "%" + Math.Round((deger * 100 / 3.33), 2);
+                }
+                else { ws3.Cells[i + 2, 11].Value2 = 0; }
+            }
+
+
 
 
             for (int i = 0; i < model.ad.Length; i++)
@@ -630,9 +757,19 @@ namespace Proje.Controllers
             for (int i = 3; i < 33; i++) { ws.Cells[1, i].Value2 = "Soru" + (i - 2).ToString(); }
 
             //A grubu
-            for (int i = 1; i < 6; i++) { ws4.Cells[1, i + 1].Value2 = "Kazanım" + i.ToString(); }
+            for (int i = 1; i < model.kazanimlar.Length + 1; i++) { ws4.Cells[1, i + 1].Value2 = model.kazanimlar[i - 1]; }
             for (int i = 1; i < 31; i++) { ws4.Cells[i + 1, 1].Value2 = "Soru" + i.ToString(); }
             ws4.Cells[1, 1].Value2 = "A";
+
+            //B grubu
+            for (int i = 1; i < model.kazanimlar.Length + 1; i++) { ws5.Cells[1, i + 1].Value2 = model.kazanimlar[i - 1]; }
+            for (int i = 1; i < 31; i++) { ws5.Cells[i + 1, 1].Value2 = "Soru" + i.ToString(); }
+            ws5.Cells[1, 1].Value2 = "B";
+
+            //C grubu
+            for (int i = 1; i < model.kazanimlar.Length + 1; i++) { ws6.Cells[1, i + 1].Value2 = model.kazanimlar[i - 1]; }
+            for (int i = 1; i < 31; i++) { ws6.Cells[i + 1, 1].Value2 = "Soru" + i.ToString(); }
+            ws6.Cells[1, 1].Value2 = "C";
 
             ws.Cells[1, 1].Value2 = "Öğrenci No";
             ws.Cells[1, 2].Value2 = "Adı/Soyadı";
@@ -642,12 +779,23 @@ namespace Proje.Controllers
             ws.Columns.AutoFit();  //otomatik hücre boyutlandır
             ws2.Rows[1].Font.Size = 14;
             ws2.Columns.AutoFit();
-            ws4.Rows[1].Font.Size = 14;   //1. satır font boyutu
-            ws4.Columns[1].Font.Size = 14; //1.sutun font boyutu
+            ws3.Columns.AutoFit();
+            ws3.Columns.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;//ortala
+
+            ws3.Columns[1].HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;//sola yapıştır
+            ws3.Columns[5].HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+            ws3.Columns[9].HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+
+
             ws4.Columns.AutoFit();  //otomatik hücre boyutlandır
+            ws5.Columns.AutoFit();
+            ws6.Columns.AutoFit();
+
             ws.Columns.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter; //ortala
-            ws2.Columns.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft; //sola yapıştır
+            ws2.Columns.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter; //ortala
             ws4.Columns.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter; //ortala
+            ws5.Columns.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter; //ortala
+            ws6.Columns.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter; //ortala
             wb.Save();
             wb.Close();
             return RedirectToAction("SinavOkut");

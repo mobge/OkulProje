@@ -19,6 +19,11 @@
         @Html.HiddenFor(m => m.yol, new { @class = "form-control" })
         @Html.HiddenFor(m => m.yol2, new { @class = "form-control" })
 
+        @for (int i = 0; i < Model.kazanimlar.Length; i++)
+        {
+            @Html.HiddenFor(m => m.kazanimlar[i], new { @class = "form - control" })
+        }
+
         <table class="table table-bordered">
             <thead>
             <th></th>
@@ -45,41 +50,82 @@
 
             }
         </table>
-        <h2>Soru Kazanım</h2>
+        <h2>Soru Kazanım A Grubu</h2>
         <table class="table table-bordered">
             <thead>
             <th></th>
-            <th><h5>Kazanım</h5></th>
-            <th><h5>Kazanım2</h5></th>
-            <th><h5>Kazanım3</h5></th>
-            <th><h5>Kazanım4</h5></th>
-            <th><h5>Kazanım5</h5></th>
+            @for (int i = 0; i < Model.kazanimlar.Length; i++)
+            {
+                <th><h5>@Model.kazanimlar[i]</h5></th>
+            }
+
             </thead>
             @for (int satir = 1; satir <= 30; satir++)
             {
                 <tbody>
                     <tr>
                         <td><h5>@satir .Soru</h5></td>
-                        <td>
-                            <input id="Kazanim" type="checkbox" value="true" name="IsSelected" />
-                            <input id="Kazanimh" type="hidden" value="false" name="IsSelected" />
-                        </td>
-                        <td>
-                            <input id="Kazanim2" type="checkbox" value="true" name="IsSelected" />
-                            <input id="Kazanimh2" type="hidden" value="false" name="IsSelected" />
-                        </td>
-                        <td>
-                            <input id="Kazanim3" type="checkbox" value="true" name="IsSelected" />
-                            <input id="Kazanimh3" type="hidden" value="false" name="IsSelected" />
-                        </td>
-                        <td>
-                            <input id="Kazanim4" type="checkbox" value="true" name="IsSelected" />
-                            <input id="Kazanimh4" type="hidden" value="false" name="IsSelected" />
-                        </td>
-                        <td>
-                            <input id="Kazanim5" type="checkbox" value="true" name="IsSelected" />
-                            <input id="Kazanimh5" type="hidden" value="false" name="IsSelected" />
-                        </td>
+                        @for (int i = 0; i < Model.kazanimlar.Length; i++)
+                        {
+                            <td>
+                                <input id="Kazanim" type="checkbox" value="true" name="IsSelectedB" />
+                                <input id="Kazanimh" type="hidden" value="false" name="IsSelectedB" />
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+
+            }
+        </table>
+        <h2>Soru Kazanım B Grubu</h2>
+        <table class="table table-bordered">
+            <thead>
+            <th></th>
+            @for (int i = 0; i < Model.kazanimlar.Length; i++)
+            {
+                <th><h5>@Model.kazanimlar[i]</h5></th>
+            }
+
+            </thead>
+            @for (int satir = 1; satir <= 30; satir++)
+            {
+                <tbody>
+                    <tr>
+                        <td><h5>@satir .Soru</h5></td>
+                        @for (int i = 0; i < Model.kazanimlar.Length; i++)
+                        {
+                            <td>
+                                <input id="Kazanim" type="checkbox" value="true" name="IsSelectedC" />
+                                <input id="Kazanimh" type="hidden" value="false" name="IsSelectedC" />
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+
+            }
+        </table>
+        <h2>Soru Kazanım C Grubu</h2>
+        <table class="table table-bordered">
+            <thead>
+            <th></th>
+            @for (int i = 0; i < Model.kazanimlar.Length; i++)
+            {
+                <th><h5>@Model.kazanimlar[i]</h5></th>
+            }
+
+            </thead>
+            @for (int satir = 1; satir <= 30; satir++)
+            {
+                <tbody>
+                    <tr>
+                        <td><h5>@satir .Soru</h5></td>
+                        @for (int i = 0; i < Model.kazanimlar.Length; i++)
+                        {
+                            <td>
+                                <input id="Kazanim" type="checkbox" value="true" name="IsSelected" />
+                                <input id="Kazanimh" type="hidden" value="false" name="IsSelected" />
+                            </td>
+                        }
                     </tr>
                 </tbody>
 
