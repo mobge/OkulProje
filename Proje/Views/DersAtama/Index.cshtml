@@ -10,7 +10,7 @@
 {
     <div class="form-group" style="height:100% !important;">
         <label>Dönem Seçiniz:</label>
-        @Html.DropDownListFor(m => m.Donem_Id, new SelectList(Model.Donem, "Donem_Id", "Donem_Adi", Model.Donem_Id), "Seçiniz", new { @class = "form-control", style = "height:100%" })
+        @Html.DropDownListFor(m => m.Donem_Id, new SelectList(Model.Donem, "Donem_Id", "Donem_Adi", Model.Donem_Id), "Seçiniz", new { @class = "form-control", style = "height:100%", onchange = "this.form.submit()" })
         @Html.ValidationMessageFor(m => m.Donem_Id, "", new { @class = "text-danger" })
     </div>
     <div class="form-group" style="height:100% !important;">

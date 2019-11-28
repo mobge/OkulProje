@@ -12,7 +12,7 @@
 {
     <div class="form-group" style="height:100% !important;">
         <label>Dönem Seçiniz:</label>
-        @Html.DropDownListFor(m => m.Donem_Id, new SelectList(Model.Donem, "Donem_Id", "Donem_Adi", Model.Donem_Id), "Seçiniz", new { @class = "form-control", style = "height:100%" , required = "required" })
+        @Html.DropDownListFor(m => m.Donem_Id, new SelectList(Model.Donem, "Donem_Id", "Donem_Adi", Model.Donem_Id), "Seçiniz", new { @class = "form-control", style = "height:100%", required = "required" })
         @Html.ValidationMessageFor(m => m.Donem_Id, "", new { @class = "text-danger" })
     </div>
     <div class="form-group" style="height:100% !important;">
@@ -43,6 +43,7 @@
         <label>Sınav Sonuçları:</label>
         <input type="file" id="sinavsonuclari" name="sinavsonuclari" required="required" />
     </div>
+    <span style="color:red;">@ViewBag.Mesaj</span>
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.Sicil_No)
     <button type="submit" class="btn btn-primary">Sonuç</button>

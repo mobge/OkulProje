@@ -23,8 +23,8 @@ namespace Proje.Controllers
             var sicilNo = (string)Session["sicilNo"];
             SinavOkutmaViewModel model = new SinavOkutmaViewModel()
             {
-                Donem = db.Donem.ToList(),
-                Fakulte = db.Acilan_Dersler.Where(s=>s.Sicil_No==sicilNo).Select(s=>s.Fakulte),
+                Donem = db.Acilan_Dersler.Where(s => s.Sicil_No == sicilNo).Select(s => s.Donem),
+                Fakulte = db.Acilan_Dersler.Where(s => s.Sicil_No == sicilNo).Select(s => s.Fakulte),
                 Bolum = db.Acilan_Dersler.Where(s => s.Sicil_No == sicilNo).Select(s => s.Bolum),
                 Dersler = db.Acilan_Dersler.Where(s => s.Sicil_No == sicilNo).Select(s => s.Dersler),
                 SinavTuru = db.Sınav_Turu.ToList(),
@@ -85,21 +85,11 @@ namespace Proje.Controllers
                 model.ogrPuan = new string[sayici];
 
 
+
                 _Application excels = new _Excel.Application();
                 //Yeni excel oluştur
                 string excelVize = @"" + sinav.Donem_Id + "_" + sinav.Fakulte_No + "_" + sinav.Bolum_ıd + "_" + sinav.Ders_Kodu + "_" + sinav.Sinav_Turu_Id + ".xlsx";
                 model.yol = Path.Combine(Server.MapPath("~/excel"), excelVize);
-                Workbook wbs;
-                wbs = excels.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
-                wbs.SaveAs(model.yol);
-                wbs.Worksheets.Add();
-                wbs.Worksheets.Add();
-                wbs.Worksheets.Add();
-                wbs.Worksheets.Add();
-                wbs.Worksheets.Add();
-                wbs.Save();
-                wbs.Close();
-
                 List<int> hatalar = new List<int>();
                 int hataSayac = 0;
                 //satirlari ayırma işlemi
@@ -342,7 +332,7 @@ namespace Proje.Controllers
                 for (int i = 0; i < kazanim.Length; i++)
                 {
 
-                    if (i + 4 < kazanim.Length)
+                    if (i - 1 < kazanim.Length)
                     {
                         if (kazanim[i] == '\r' && kazanim[i + 1] == '\n')
                         {
@@ -358,20 +348,24 @@ namespace Proje.Controllers
                     int kazanimDiziSayac = 0;
                     kazanimSayac = 0;
                     model.kazanimlar = new string[kazanimlar.Length];
-                    for (int i = 0; i < kazanim.Length; i++)
+                    for (int i = 0; i < kazanim.Length - 1; i++)
                     {
                         kazanimsayac2++;
                         if (kazanim[i] == '\r' && kazanim[i + 1] == '\n')
                         {
-                            kazanimlar[kazanimDiziSayac] = new string(kazanim, kazanimSayac, kazanimsayac2 - 2);
+                            kazanimlar[kazanimDiziSayac] = new string(kazanim, kazanimSayac, kazanimsayac2 - 1);
                             model.kazanimlar[kazanimDiziSayac] = kazanimlar[kazanimDiziSayac];
-                            kazanimDiziSayac++;
-                            kazanimsayac2 = 0;
                             kazanimSayac = i + 2;
+                            kazanimDiziSayac++;
+                            i = i + 2;
+                            kazanimsayac2 = 1;
+
+
                         }
                     }
 
                 }
+
 
 
 
@@ -422,18 +416,85 @@ namespace Proje.Controllers
                 ViewBag.yol = model.yol;
 
                 //Db'de Sinav Sonuçları adlı tabloya kaydetme işlemi
-                var eklenecekSinav = new Sinav_Sonuclari();
-                eklenecekSinav.Ders_Kodu = sinav.Ders_Kodu;
-                eklenecekSinav.Fakulte_No = sinav.Fakulte_No;
-                eklenecekSinav.Bolum_ıd = sinav.Bolum_ıd;
-                eklenecekSinav.Donem_Id = sinav.Donem_Id;
-                eklenecekSinav.Sicil_No = sicilNo;
-                eklenecekSinav.Sinav_Turu_Id = sinav.Sinav_Turu_Id;
-                eklenecekSinav.Sonuc = excelVize;
-                db.Entry(eklenecekSinav).State = EntityState.Added;
-                db.SaveChanges();
-                return View("Kiyasla", model);
+                string dersVarmi = db.Sinav_Sonuclari.Where(s => s.Ders_Kodu == sinav.Ders_Kodu).Select(s => s.Ders_Kodu).FirstOrDefault();
+                int sinavTuruVarmi = db.Sinav_Sonuclari.Where(s => s.Ders_Kodu == dersVarmi).Select(s => s.Sinav_Turu_Id).FirstOrDefault();
+                int donemAynimi = db.Sinav_Sonuclari.Where(s => s.Ders_Kodu == dersVarmi).Where(s => s.Sinav_Turu_Id == sinavTuruVarmi).Select(s => s.Donem_Id).FirstOrDefault();
+                if (dersVarmi == null)
+                {
+                    Workbook wbs;
+                    wbs = excels.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+                    wbs.SaveAs(model.yol);
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Save();
+                    wbs.Close();
+                    var eklenecekSinav = new Sinav_Sonuclari();
+                    eklenecekSinav.Ders_Kodu = sinav.Ders_Kodu;
+                    eklenecekSinav.Fakulte_No = sinav.Fakulte_No;
+                    eklenecekSinav.Bolum_ıd = sinav.Bolum_ıd;
+                    eklenecekSinav.Donem_Id = sinav.Donem_Id;
+                    eklenecekSinav.Sicil_No = sicilNo;
+                    eklenecekSinav.Sinav_Turu_Id = sinav.Sinav_Turu_Id;
+                    eklenecekSinav.Sonuc = excelVize;
+                    db.Entry(eklenecekSinav).State = EntityState.Added;
+                    db.SaveChanges();
+                }
+                else if (dersVarmi != null && sinavTuruVarmi != sinav.Sinav_Turu_Id && donemAynimi != sinav.Donem_Id)
+                {
+                    Workbook wbs;
+                    wbs = excels.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+                    wbs.SaveAs(model.yol);
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Save();
+                    wbs.Close();
+                    var eklenecekSinav = new Sinav_Sonuclari();
+                    eklenecekSinav.Ders_Kodu = sinav.Ders_Kodu;
+                    eklenecekSinav.Fakulte_No = sinav.Fakulte_No;
+                    eklenecekSinav.Bolum_ıd = sinav.Bolum_ıd;
+                    eklenecekSinav.Donem_Id = sinav.Donem_Id;
+                    eklenecekSinav.Sicil_No = sicilNo;
+                    eklenecekSinav.Sinav_Turu_Id = sinav.Sinav_Turu_Id;
+                    eklenecekSinav.Sonuc = excelVize;
+                    db.Entry(eklenecekSinav).State = EntityState.Added;
+                    db.SaveChanges();
 
+                }
+                else if (dersVarmi != null && sinavTuruVarmi == sinav.Sinav_Turu_Id && donemAynimi != sinav.Donem_Id)
+                {
+                    Workbook wbs;
+                    wbs = excels.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+                    wbs.SaveAs(model.yol);
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Worksheets.Add();
+                    wbs.Save();
+                    wbs.Close();
+                    var eklenecekSinav = new Sinav_Sonuclari();
+                    eklenecekSinav.Ders_Kodu = sinav.Ders_Kodu;
+                    eklenecekSinav.Fakulte_No = sinav.Fakulte_No;
+                    eklenecekSinav.Bolum_ıd = sinav.Bolum_ıd;
+                    eklenecekSinav.Donem_Id = sinav.Donem_Id;
+                    eklenecekSinav.Sicil_No = sicilNo;
+                    eklenecekSinav.Sinav_Turu_Id = sinav.Sinav_Turu_Id;
+                    eklenecekSinav.Sonuc = excelVize;
+                    db.Entry(eklenecekSinav).State = EntityState.Added;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    ViewBag.Mesaj = "Bu sınav sistemde mevcut...";
+                    return RedirectToAction("Index");
+                }
+                return View("Kiyasla", model);
             }
         }
         [HttpPost]
@@ -637,7 +698,7 @@ namespace Proje.Controllers
             //Kazanım Tablosu
             int sutunSayac = 0;
             int satirsayac = 2;
-            //A B C grubu
+            //A grubu
             for (int i = 0; i < model.IsSelected.Length; i++)
             {
                 if (model.IsSelected[i] == true)
@@ -646,8 +707,42 @@ namespace Proje.Controllers
                     sutunSayac++;
                     ws4.Cells[satirsayac, sutunSayac + 1].Value2 = "X";
                     kazanimA[satirsayac - 2, sutunSayac - 1] = "X";
+                    if (sutunSayac == model.kazanimlar.Length) { satirsayac++; sutunSayac = 0; }
+                }
+                else
+                {
+                    sutunSayac++;
+                    if (sutunSayac == model.kazanimlar.Length) { satirsayac++; sutunSayac = 0; }
+                }
+            }
+            //B Grubu
+            sutunSayac = 0;
+            satirsayac = 2;
+            for (int i = 0; i < model.IsSelectedB.Length; i++)
+            {
+                if (model.IsSelectedB[i] == true)
+                {
+                    i++;
+                    sutunSayac++;
                     ws5.Cells[satirsayac, sutunSayac + 1].Value2 = "X";
                     kazanimB[satirsayac - 2, sutunSayac - 1] = "X";
+                    if (sutunSayac == model.kazanimlar.Length) { satirsayac++; sutunSayac = 0; }
+                }
+                else
+                {
+                    sutunSayac++;
+                    if (sutunSayac == model.kazanimlar.Length) { satirsayac++; sutunSayac = 0; }
+                }
+            }
+            //C Grubu
+            sutunSayac = 0;
+            satirsayac = 2;
+            for (int i = 0; i < model.IsSelectedC.Length; i++)
+            {
+                if (model.IsSelectedC[i] == true)
+                {
+                    i++;
+                    sutunSayac++;
                     ws6.Cells[satirsayac, sutunSayac + 1].Value2 = "X";
                     kazanimC[satirsayac - 2, sutunSayac - 1] = "X";
                     if (sutunSayac == model.kazanimlar.Length) { satirsayac++; sutunSayac = 0; }
@@ -683,12 +778,13 @@ namespace Proje.Controllers
             {
                 double deger = Math.Round((kazanimPuanA[i] / kazanimSayiA[i]), 2);
                 ws3.Cells[i + 2, 1].Value2 = model.kazanimlar[i];
-                ws3.Cells[i + 2, 2].Value2 = deger;
+
                 if (kazanimPuanA[i] != 0)
                 {
+                    ws3.Cells[i + 2, 2].Value2 = Math.Round(deger, 2);
                     ws3.Cells[i + 2, 3].Value2 = "'" + "%" + Math.Round((deger * 100 / 3.33), 2);
                 }
-                else { ws3.Cells[i + 2, 3].Value2 = 0; }
+                else { ws3.Cells[i + 2, 2].Value2 = 0; ws3.Cells[i + 2, 3].Value2 = 0; }
             }
             //B Grubu
             ws3.Cells[1, 5].Value2 = "B Grubu";
@@ -711,12 +807,13 @@ namespace Proje.Controllers
             {
                 double deger = Math.Round((kazanimPuanB[i] / kazanimSayiB[i]), 2);
                 ws3.Cells[i + 2, 5].Value2 = model.kazanimlar[i];
-                ws3.Cells[i + 2, 6].Value2 = deger;
+
                 if (kazanimPuanB[i] != 0)
                 {
+                    ws3.Cells[i + 2, 6].Value2 = Math.Round(deger, 2);
                     ws3.Cells[i + 2, 7].Value2 = "'" + "%" + Math.Round((deger * 100 / 3.33), 2);
                 }
-                else { ws3.Cells[i + 2, 7].Value2 = 0; }
+                else { ws3.Cells[i + 2, 6].Value2 = 0; ws3.Cells[i + 2, 7].Value2 = 0; }
             }
             //C Grubu
             ws3.Cells[1, 9].Value2 = "C Grubu";
@@ -739,12 +836,13 @@ namespace Proje.Controllers
             {
                 double deger = Math.Round((kazanimPuanC[i] / kazanimSayiC[i]), 2);
                 ws3.Cells[i + 2, 9].Value2 = model.kazanimlar[i];
-                ws3.Cells[i + 2, 10].Value2 = deger;
+
                 if (kazanimPuanC[i] != 0)
                 {
+                    ws3.Cells[i + 2, 10].Value2 = Math.Round(deger, 2);
                     ws3.Cells[i + 2, 11].Value2 = "'" + "%" + Math.Round((deger * 100 / 3.33), 2);
                 }
-                else { ws3.Cells[i + 2, 11].Value2 = 0; }
+                else { ws3.Cells[i + 2, 10].Value2 = 0; ws3.Cells[i + 2, 11].Value2 = 0; }
             }
 
 
@@ -799,7 +897,7 @@ namespace Proje.Controllers
             ws6.Columns.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter; //ortala
             wb.Save();
             wb.Close();
-            return RedirectToAction("Index","Derslerim");
+            return RedirectToAction("Index", "Derslerim");
         }
     }
 }

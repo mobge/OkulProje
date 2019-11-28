@@ -17,9 +17,9 @@ namespace Proje.Controllers
             DersAtamaViewModel model = new DersAtamaViewModel()
             {
                 Donem = db.Donem.ToList(),
-                Fakulte = db.Fakulte.ToList(),
-                Bolum = db.Bolum.Where(s => s.Fakulte_No == dersler.Fakulte_No).ToList(),
-                DersAtama = db.Acilan_Dersler.Where(s => s.Bolum_Id == dersler.Bolum_Id).Where(s => s.Fakulte_No == dersler.Fakulte_No).ToList(),
+                Fakulte = db.Acilan_Dersler.Where(s => s.Donem_Id == dersler.Donem_Id).Select(s => s.Fakulte),
+                Bolum = db.Acilan_Dersler.Where(s=>s.Donem_Id==dersler.Donem_Id).Where(s => s.Fakulte_No == dersler.Fakulte_No).Select(s => s.Bolum),
+                DersAtama = db.Acilan_Dersler.Where(s=>s.Donem_Id==dersler.Donem_Id).Where(s => s.Bolum_Id == dersler.Bolum_Id).Where(s => s.Fakulte_No == dersler.Fakulte_No).ToList(),
         };
             return View(model);
         }
@@ -39,7 +39,9 @@ namespace Proje.Controllers
         [HttpPost]
         public ActionResult EkleAtama(DersAtamaViewModel dersler)
         {
-            var checkDersKodu = db.Acilan_Dersler.Where(x => x.Ders_Kodu == dersler.Ders_Kodu).SingleOrDefault();
+            string checkDersKodu = db.Acilan_Dersler.Where(x => x.Ders_Kodu == dersler.Ders_Kodu).Select(s=>s.Ders_Kodu).FirstOrDefault();
+            int checkDonemId = db.Acilan_Dersler.Where(x => x.Ders_Kodu == checkDersKodu).Select(s => s.Donem_Id).FirstOrDefault();
+            string dersAtanmismi = db.Acilan_Dersler.Where(x => x.Ders_Kodu == checkDersKodu).Where(x => x.Donem_Id == checkDonemId).Select(s => s.Ders_Kodu).FirstOrDefault();
             DersAtamaViewModel model = new DersAtamaViewModel()
             {
                 Donem = db.Donem.ToList(),
@@ -67,16 +69,36 @@ namespace Proje.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            else if (checkDersKodu.Ders_Kodu == dersler.Ders_Kodu)
+            else if (checkDersKodu!=null && checkDonemId!=dersler.Donem_Id && dersAtanmismi!=dersler.Ders_Kodu)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View("Ekle", model);
+                }
+                //farklı tabloya kendine ait bölümleri tek tek eklemek için yaptığım yöntem.
+                var atanacakDers = new Acilan_Dersler();
+                atanacakDers.Donem_Id = dersler.Donem_Id;
+                atanacakDers.Fakulte_No = dersler.Fakulte_No;
+                atanacakDers.Bolum_Id = dersler.Bolum_Id;
+                atanacakDers.Ders_Kodu = dersler.Ders_Kodu;
+                atanacakDers.Sicil_No = dersler.Sicil_No;
+                atanacakDers.Sinif = dersler.Sinif;
+                db.Entry(atanacakDers).State = EntityState.Added;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
             {
                 ViewBag.Mesaj = "Hata, Seçtiğiniz ders başka bir öğretim görevlisine atanmış...";
             }
+            
             return View("Ekle", model);
         }
         public ActionResult Guncelle(int id)
         {
             DersAtamaDetailViewModel dersAtamaDetailViewModel = new DersAtamaDetailViewModel();
             dersAtamaDetailViewModel.UpdatedDersAtama = (from a in db.Acilan_Dersler join b in db.Bolum on a.Bolum_Id equals b.Bolum_Id join c in db.Fakulte on a.Fakulte_No equals c.Fakulte_No join d in db.Kullanici on a.Sicil_No equals d.Sicil_No join e in db.Dersler on a.Ders_Kodu equals e.Ders_Kodu join f in db.Donem on a.Donem_Id equals f.Donem_Id join h in db.Siniflar on a.Sinif equals h.Sinif_Id where a.Id == id select new DersAtamaDetail { Bolum_Id = a.Bolum_Id, Fakulte_No = a.Fakulte_No, Ders_Kodu=a.Ders_Kodu, Sicil_No=a.Sicil_No, Donem_Id=a.Donem_Id, Sinif_No=h.Sinif_No, Id=a.Id}).FirstOrDefault();
+            dersAtamaDetailViewModel.Donem = db.Donem.ToList();
             dersAtamaDetailViewModel.Fakulte = db.Fakulte.ToList();
             dersAtamaDetailViewModel.Bolum = db.Bolum.ToList();
             dersAtamaDetailViewModel.Dersler = db.Dersler.ToList();
@@ -104,7 +126,7 @@ namespace Proje.Controllers
                 guncellenecekDersAtama.Sicil_No = dersAtamaDetail.UpdatedDersAtama.Sicil_No;
                 guncellenecekDersAtama.Sinif = dersAtamaDetail.UpdatedDersAtama.Sinif_No;
                 db.SaveChanges();
-                return View("Guncelle");
+                return RedirectToAction("Index");
             }
         }
         public ActionResult Sil(int id)
